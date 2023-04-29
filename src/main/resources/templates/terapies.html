@@ -6,56 +6,118 @@
 <head>
   <title>Elena Puig - Terapies</title>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalablre=no, maximum-sclale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
+  <style>
+    .list-container {
+      height: 80vh;
+      overflow-y: scroll;
+    }
+
+    /* Oculta la barra de scroll */
+    ::-webkit-scrollbar {
+      display: none;
+    }
+
+    body {
+      scrollbar-width: none;
+    }
+  </style>
 </head>
 
 <body>
-  <div class="container-fluid p-5 bg-primary text-white text-center">
-    <h1>Elena Puig - Psicologa</h1>
-    <p>Aqui trobareu tota la meva info sobre qui soc i que faig</p>
-  </div>
-  <div th:replace="/components/nav.html"></div>
+  <div th:replace="~{/components/nav.html}"></div><!-- Posem la barra de navegació -->
+  <div th:replace="~{/components/subNav.html}"></div><!-- sub barra de navegació -->
   <div class="container">
     <div class="row">
-      <div th:if="${solicitud.getParameter('view_name') == 'new' || solicitud.getParameter('view_name') == 'update'}" class="col-sm-4">
-        <form th:action="@{/admin/terapies}" th:method="post" th:object="${terapies}">
-          <input type="hidden" th:field="*{idTerapies}">
 
-          <div class="form-group">
-            <label for="inputNombre">Nom</label>
-            <input class="form-control" type="text" th:value="*{nomTerapia}" id="inputNom" th:field="*{nomTerapia}"
-              name="Nom">
-          </div>
-
-          <div class="form-group">
-            <label for="inputDescripcion">Descripció</label>
-            <input class="form-control" type="text" th:value="*{descripcioTerapia}" id="inputDescripcio"
-              th:field="*{descripcioTerapia}" name="descripcio">
-          </div>
-
-          <div class="form-group">
-            <button type="submit" class="btn btn-primary">Guardar</button>
-            <button type="reset" class="btn btn-primary">Buidar</button>
-          </div>
-
-        </form>
-      </div>
+      <!-- a la esquerra posem el que seria -->
       <div class="col-sm-4">
-        <h3>Terapia 2</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
+        <div th:each="terapia : ${terapies}" class="list-group">
+          <a href="#" class="list-group-item list-group-item-action" th:text="${terapia.getTitolTerapies}"></a>
+        </div>
+        <a th:href="'/admin/terapies?view_name=new'" class="list-group-item list-group-item-action">Agrega una
+          Terapia</a>
       </div>
-      <div class="col-sm-4">
-        <h3>Terapia 3</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
+
+      <!-- Aqui es veu les diferents terapies-->
+      <div class="col-sm-8">
+          <div th:if="${solicitud.getParameter('view_name') == null || solicitud.getParameter('view_name') == 'all'}">
+            <div th:each="terapia : ${terapies}" class="list-group">
+              <h3 th:text="${terapia.getTitolTerapies}"></h3>
+              <p th:text="${terapia.getDescripcioTerapies}"></p>
+              <div class="row">
+                <div class="col-sm-4">
+                  <button type="button" class="btn btn-primary"> <!-- Aquest es el boto d'editar/actualizar-->
+                    <a class="text-white"
+                      th:href="'/admin/terapies?view_name=update&id=' + ${terapia.getIdTerapies}">Editar</a>
+                  </button>
+                </div>
+                <div class="col-sm-4">
+                  <form style="margin:0px" th:action="@{/admin/terapies}" th:method="delete">
+                    <input type="hidden" name="id" th:value="${terapia.getIdTerapies}">
+                    <button type="submit" class="btn btn-danger"> Eliminar </button><!-- Aquest es el boto d'eliminar-->
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        <!-- Si el parametre es "new" la pagina mostrara aquest codi, que serveix per agregar una nova terapia-->
+        <div th:if="${solicitud.getParameter('view_name') == 'new'}" class="col-sm-8 m-0">
+          <form th:action="@{/admin/terapies}" th:method="post" th:object="${terapiaNova}">
+            <input type="hidden" th:field="*{idTerapies}">
+
+            <div class="form-group">
+              <label for="inputTitol">Titol de la terapia</label>
+              <input class="form-control" type="text" th:value="*{titolTerapies}" id="inputTitol" th:field="*{titolTerapies}"
+                name="Titol">
+            </div>
+
+            <div class="form-group">
+              <label for="inputdescripcioTerapiesn">Descripció</label>
+              <input class="form-control" type="text" th:value="*{descripcioTerapies}" id="inputdescripcioTerapies"
+                th:field="*{descripcioTerapies}" name="descripcioTerapies">
+            </div>
+
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary">Guardar</button>
+              <button type="reset" class="btn btn-primary">Buidar</button>
+            </div>
+          </form>
+        </div>
+
+
+        <!-- Si el parametre es "update" la pagina mostrara aquest codi, que serveix per actualitzar la terapia seleccionada-->
+        <div th:if="${solicitud.getParameter('view_name') == 'update'}" class="col-sm-7">
+          <form th:action="@{/admin/terapies}" th:method="post" th:object="${terapiaUpdate}">
+            <input type="hidden" th:field="*{idTerapies}">
+
+            <div class="form-group">
+              <label for="inputTitol">Titol de la terapia</label>
+              <input class="form-control" type="text" th:value="*{titolTerapies}" id="inputTitol" th:field="*{titolTerapies}"
+                name="Titol">
+            </div>
+
+            <div class="form-group">
+              <label for="inputdescripcioTerapiesn">Descripció</label>
+              <input class="form-control" type="text" th:value="*{descripcioTerapies}" id="inputdescripcioTerapies"
+                th:field="*{descripcioTerapies}" name="descripcioTerapies">
+            </div>
+
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary">Guardar</button>
+              <button type="reset" class="btn btn-primary">Buidar</button>
+            </div>
+          </form>
+        </div>
+
       </div>
     </div>
   </div>
-
-  <div th:replace="/components/scripts.html"></div>
+  <div th:replace="~{/components/scripts.html}"></div>
 </body>
 
 </html>

@@ -1,7 +1,7 @@
 package com.appweb.psicologa.psicologa.repository;
 
 import java.util.List;
-
+import java.sql.Date;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +35,11 @@ public class TerapiesRep implements InterfaceRep<Terapies> {
 
     @Override
     public boolean guardar(Terapies terapies) {
+        Date date = new Date(new java.util.Date().getTime());
+
         try {
-            String sql = String.format("insert into Terapies(Nom,Descripcio,Duracio) values('%s', '%s', %d)",
-                    terapies.getNomTerapia(), terapies.getDescripcioTerapia(), terapies.getDuracioTerapia());
+            String sql = "insert into terapies(titolTerapies,descripcioTerapies,dataPublicacio) values(?,?,?)";
+                jdbcTemplate.update(sql, terapies.getTitolTerapies(), terapies.getDescripcioTerapies(), date);
             jdbcTemplate.execute(sql);
             return true;
         } catch (Exception e) {
@@ -51,8 +53,8 @@ public class TerapiesRep implements InterfaceRep<Terapies> {
         if (terapies.getIdTerapies() > 0) {
             try {
                 String sql = String.format(
-                        "update Terapies set Nom='%s', Descripcio='%s',Duracio='%d' = where IdTerapies='%d'",
-                        terapies.getNomTerapia(), terapies.getDescripcioTerapia(), terapies.getDuracioTerapia(),
+                        "update terapies set titolTerapies='%s', descripcioTerapies='%s' where IdTerapies='%d'",
+                        terapies.getTitolTerapies(), terapies.getDescripcioTerapies(), terapies.getDuracioTerapia(),
                         terapies.getIdTerapies());
                 jdbcTemplate.execute(sql);
                 return true;
@@ -67,11 +69,25 @@ public class TerapiesRep implements InterfaceRep<Terapies> {
     @Override
     public List<Terapies> buscarAll(Pageable pageable) {
 
-        return jdbcTemplate.query("SELECT * From Terapies", new TerapiesMapper());
+        return jdbcTemplate.query("SELECT * From terapies", new TerapiesMapper());
     }
 
     @Override
     public Terapies buscarPerId(int id) {
-        return jdbcTemplate.queryForObject("SELECT * From Terapies where idTerapies=?", new TerapiesMapper(), id);
+        return jdbcTemplate.queryForObject("SELECT * From terapies where idTerapies=?", new TerapiesMapper(), id);
     }
+
+    public boolean eliminarById(int id) {
+        try {
+            String sql = String.format(
+                    "delete from terapies where IdTerapies='%d'", id);
+            jdbcTemplate.execute(sql);
+            return true;
+        } catch (Exception e) {
+            System.err.println(e);
+            return false;
+        }
+    }
+
+    
 }

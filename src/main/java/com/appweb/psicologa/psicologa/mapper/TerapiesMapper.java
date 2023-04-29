@@ -13,10 +13,9 @@ public class TerapiesMapper implements RowMapper<Terapies>{
         Terapies terapies = new Terapies();
         
         terapies.setIdTerapies(rs.getInt("IdTerapies"));
-        terapies.setNomTerapia(rs.getString("Nom"));
-        terapies.setDescripcioTerapia(rs.getString("Descripcio"));
-        terapies.setDataTerapia(rs.getDate("Fecha"));
-        terapies.setDuracioTerapia(rs.getInt("Duracio"));
+        terapies.setTitolTerapies(rs.getString("titolTerapies"));
+        terapies.setDescripcioTerapies(rs.getString("descripcioTerapies"));
+        terapies.setDataTerapia(rs.getDate("dataPublicacio"));
 
         return terapies;
     }

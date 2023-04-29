@@ -32,13 +32,11 @@ public class UsuariRep implements InterfaceRep<Usuari>{
 
     @Override
     public List<Usuari> buscarAll(Pageable pageable) {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public Usuari buscarPerId(int id) {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -57,7 +55,6 @@ public class UsuariRep implements InterfaceRep<Usuari>{
 
     @Override
     public boolean update(Usuari user) {
-        // TODO Auto-generated method stub
         return false;
     }
     

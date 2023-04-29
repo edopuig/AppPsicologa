@@ -4,8 +4,8 @@ import java.util.Date;
 
 public class Terapies {
     private int idTerapies;
-    private String nomTerapia;
-    private String descripcioTerapia;
+    private String titolTerapies;
+    private String descripcioTerapies;
     private Date dataTerapia;
     private int duracioTerapia;
 
@@ -15,17 +15,17 @@ public class Terapies {
     public void setIdTerapies(int idTerapies) {
         this.idTerapies = idTerapies;
     }
-    public String getNomTerapia() {
-        return nomTerapia;
+    public String getTitolTerapies() {
+        return titolTerapies;
     }
-    public void setNomTerapia(String nomTerapia) {
-        this.nomTerapia = nomTerapia;
+    public void setTitolTerapies(String titolTerapies) {
+        this.titolTerapies = titolTerapies;
     }
-    public String getDescripcioTerapia() {
-        return descripcioTerapia;
+    public String getDescripcioTerapies() {
+        return descripcioTerapies;
     }
-    public void setDescripcioTerapia(String descripcioTerapia) {
-        this.descripcioTerapia = descripcioTerapia;
+    public void setDescripcioTerapies(String descripcioTerapies) {
+        this.descripcioTerapies = descripcioTerapies;
     }
     public Date getDataTerapia() {
         return dataTerapia;
