@@ -11,6 +11,6 @@ public class BlogsController {
     
     @GetMapping()
     public ModelAndView getHome(){
-        return new ModelAndView("blogs");//Referencia al template blogs.html
+        return new ModelAndView("/blogs");//Referencia al template blogs.html
     }
 }

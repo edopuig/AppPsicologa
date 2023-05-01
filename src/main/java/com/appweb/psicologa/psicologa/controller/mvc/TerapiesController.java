@@ -23,7 +23,7 @@ public class TerapiesController {
     @GetMapping
     public ModelAndView getHome( @RequestParam(defaultValue = "all", required = false) String view_name, @RequestParam(defaultValue = "0", required = false) int id, Pageable pageable){
         
-        ModelAndView modelAndView = new ModelAndView("terapies");//Referencia al template terapies.html
+        ModelAndView modelAndView = new ModelAndView("/terapies");//Referencia al template terapies.html
 
         switch (view_name){
             case "all":

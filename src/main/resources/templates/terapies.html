@@ -34,13 +34,14 @@
     <div class="row">
 
       <!-- a la esquerra posem el que seria -->
-      <div class="col-sm-4">
-        <div th:each="terapia : ${terapies}" class="list-group">
+      <ul class="col-sm-4">
+        <li th:each="terapia : ${terapies}" class="list-group">
           <a href="#" class="list-group-item list-group-item-action" th:text="${terapia.getTitolTerapies}"></a>
-        </div>
-        <a th:href="'/admin/terapies?view_name=new'" class="list-group-item list-group-item-action">Agrega una
-          Terapia</a>
-      </div>
+        </li>
+        <li>
+          <a th:href="'/admin/terapies?view_name=new'" class="list-group-item list-group-item-action">Agrega una Terapia</a>
+        </li>
+      </ul>
 
       <!-- Aqui es veu les diferents terapies-->
       <div class="col-sm-8">
@@ -89,6 +90,8 @@
               <button type="reset" class="btn btn-primary">Buidar</button>
             </div>
           </form>
+
+          
         </div>
 
 
