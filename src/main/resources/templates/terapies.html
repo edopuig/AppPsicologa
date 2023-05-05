@@ -36,7 +36,7 @@
       <!-- a la esquerra posem el que seria -->
       <ul class="col-sm-4">
         <li th:each="terapia : ${terapies}" class="list-group">
-          <a href="#" class="list-group-item list-group-item-action" th:text="${terapia.getTitolTerapies}"></a>
+          <a th:href="'#terpiaId' + ${terapia.getIdTerapies}" class="list-group-item list-group-item-action" th:text="${terapia.getTitolTerapies}" data-bs-toggle="collapse" ></a>
         </li>
         <li>
           <a th:href="'/admin/terapies?view_name=new'" class="list-group-item list-group-item-action">Agrega una Terapia</a>
@@ -45,9 +45,9 @@
 
       <!-- Aqui es veu les diferents terapies-->
       <div class="col-sm-8">
-        <div th:if="${solicitud.getParameter('view_name') == null || solicitud.getParameter('view_name') == 'all'}">
-          <div class="list-container">
-            <div th:each="terapia : ${terapies}" class="list-group">
+        <div th:if="${solicitud.getParameter('view_name') == null || solicitud.getParameter('view_name') == 'all'}" id="accordion">
+          <div class="list-container collapse show">
+            <div th:each="terapia : ${terapies}" class="list-group" th:id="'terpiaId' + ${terapia.getIdTerapies}" data-bs-parent="#accordion">
               <h3 th:text="${terapia.getTitolTerapies}"></h3>
               <p th:text="${terapia.getDescripcioTerapies}"></p>
               <div class="row">
