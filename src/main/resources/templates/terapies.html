@@ -39,7 +39,7 @@
           <a th:href="'#terpiaId' + ${terapia.getIdTerapies}" class="list-group-item list-group-item-action" th:text="${terapia.getTitolTerapies}" data-bs-toggle="collapse" ></a>
         </li>
         <li>
-          <a th:href="'/admin/terapies?view_name=new'" class="list-group-item list-group-item-action">Agrega una Terapia</a>
+          <a th:href="'/terapies?view_name=new'" class="list-group-item list-group-item-action">Agrega una Terapia</a>
         </li>
       </ul>
 
@@ -54,11 +54,11 @@
                 <div class="col-sm-4">
                   <button type="button" class="btn btn-primary"> <!-- Aquest es el boto d'editar/actualizar-->
                     <a class="text-white"
-                      th:href="'/admin/terapies?view_name=update&id=' + ${terapia.getIdTerapies}">Editar</a>
+                      th:href="'/terapies?view_name=update&id=' + ${terapia.getIdTerapies}">Editar</a>
                   </button>
                 </div>
                 <div class="col-sm-4">
-                  <form style="margin:0px" th:action="@{/admin/terapies}" th:method="delete">
+                  <form style="margin:0px" th:action="@{/terapies}" th:method="delete">
                     <input type="hidden" name="id" th:value="${terapia.getIdTerapies}">
                     <button type="submit" class="btn btn-danger"> Eliminar </button><!-- Aquest es el boto d'eliminar-->
                   </form>
@@ -70,7 +70,7 @@
 
         <!-- Si el parametre es "new" la pagina mostrara aquest codi, que serveix per agregar una nova terapia-->
         <div th:if="${solicitud.getParameter('view_name') == 'new'}" class="col-sm-8 m-0">
-          <form th:action="@{/admin/terapies}" th:method="post" th:object="${terapiaNova}">
+          <form th:action="@{/terapies}" th:method="post" th:object="${terapiaNova}">
             <input type="hidden" th:field="*{idTerapies}">
 
             <div class="form-group">
@@ -97,7 +97,7 @@
 
         <!-- Si el parametre es "update" la pagina mostrara aquest codi, que serveix per actualitzar la terapia seleccionada-->
         <div th:if="${solicitud.getParameter('view_name') == 'update'}" class="col-sm-7">
-          <form th:action="@{/admin/terapies}" th:method="post" th:object="${terapiaUpdate}">
+          <form th:action="@{/terapies}" th:method="post" th:object="${terapiaUpdate}">
             <input type="hidden" th:field="*{idTerapies}">
 
             <div class="form-group">

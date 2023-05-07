@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/admin/blogs")//Sera com va en el navegador (http..../admin)
+@RequestMapping("/blogs")//Sera com va en el navegador (http..../blogs)
 public class BlogsController {
     
     @GetMapping()

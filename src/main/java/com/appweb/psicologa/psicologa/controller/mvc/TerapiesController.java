@@ -14,14 +14,14 @@ import com.appweb.psicologa.psicologa.repository.TerapiesRep;
 import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
 
 @Controller
-@RequestMapping("/admin/terapies")
+@RequestMapping("/terapies")
 public class TerapiesController {
    
     @Autowired
     private TerapiesRep terapiesRepository;
 
     @GetMapping
-    public ModelAndView getHome( @RequestParam(defaultValue = "all", required = false) String view_name, @RequestParam(defaultValue = "0", required = false) int id, Pageable pageable){
+    public ModelAndView getHome(@RequestParam(defaultValue = "all", required = false) String view_name, @RequestParam(defaultValue = "0", required = false) int id, Pageable pageable){
         
         ModelAndView modelAndView = new ModelAndView("/terapies");//Referencia al template terapies.html
 
@@ -49,12 +49,12 @@ public class TerapiesController {
         } else {
             terapiesRepository.guardar(terapies);
         }
-        return "redirect:/admin/terapies";
+        return "redirect:/terapies";
     }
 
     @DeleteMapping
     public String eliminarById(@RequestParam int id){
         terapiesRepository.eliminarById(id);
-        return "redirect:/admin/terapies";
+        return "redirect:/terapies";
     }
 }

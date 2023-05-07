@@ -43,8 +43,8 @@ public class UsuariRep implements InterfaceRep<Usuari>{
     @Override
     public boolean guardar(Usuari user) {
         try {
-            String sql = String.format("insert into Terapies(Nom,Cognom,Contrassenya,Correu,IdGrup) values('%s', '%s', %d)",
-            user.getNomUsuari(), user.getCognomUsuari(), user.getContrasenyaUsuari(), user.getCorreuUsuari(), user.getIdGrup());
+            String sql = String.format("insert into usuaris(Nom,Cognom,Contrassenya,CorreuElectronic,IdRol,Telefon,Newsletter) values('%s', '%s', %s, %s, %d, %d, %d)",
+            user.getNomUsuari(), user.getCognomUsuari(), user.getContrasenyaUsuari(), user.getCorreuUsuari(), user.getIdRol(), user.getTelefonUsuari(), user.getNewsletter());
             jdbcTemplate.execute(sql);
             return true;
         } catch (Exception e) {

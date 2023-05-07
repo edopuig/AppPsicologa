@@ -6,7 +6,9 @@ public class Usuari {
     private String cognomUsuari;
     private String contrasenyaUsuari;
     private String correuUsuari;
-    private int idGrup;
+    private int idRol;
+    private int telefonUsuari;
+    private int newsletter;
 
     public int getIdUsuari() {
         return idUsuari;
@@ -38,10 +40,23 @@ public class Usuari {
     public void setCorreuUsuari(String correuUsuari) {
         this.correuUsuari = correuUsuari;
     }
-    public int getIdGrup() {
-        return idGrup;
+    public int getIdRol() {
+        return idRol;
     }
-    public void setIdGrup(int idGrup) {
-        this.idGrup = idGrup;
+    public void setIdRol(int idRol) {
+        this.idRol = idRol;
     }
+    public int getTelefonUsuari() {
+        return telefonUsuari;
+    }
+    public void setTelefonUsuari(int telefonUsuari) {
+        this.telefonUsuari = telefonUsuari;
+    }
+    public int getNewsletter() {
+        return newsletter;
+    }
+    public void setNewsletter(int newsletter) {
+        this.newsletter = newsletter;
+    }
+
 }
