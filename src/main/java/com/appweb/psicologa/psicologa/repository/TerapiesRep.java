@@ -5,7 +5,6 @@ import java.sql.Date;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.appweb.psicologa.psicologa.mapper.TerapiesMapper;
@@ -65,7 +64,7 @@ public class TerapiesRep implements InterfaceRep<Terapies> {
     }
 
     @Override
-    public List<Terapies> buscarAll(Pageable pageable) {
+    public List<Terapies> buscarAll() {
 
         return jdbcTemplate.query("SELECT * From terapies", new TerapiesMapper());
     }

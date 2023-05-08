@@ -2,8 +2,7 @@ package com.appweb.psicologa.psicologa.repository;
 
 import java.util.List;
 
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
-
+import com.appweb.psicologa.psicologa.mapper.UsuariMapper;
 import com.appweb.psicologa.psicologa.model.Usuari;
 
 import javax.sql.DataSource;
@@ -13,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import jakarta.annotation.PostConstruct;
 
 @Repository
-public class UsuariRep implements InterfaceRep<Usuari>{
+public class UsuariRep implements InterfaceRep<Usuari> {
 
     @Autowired
     private DataSource dataSource;
@@ -31,7 +30,7 @@ public class UsuariRep implements InterfaceRep<Usuari>{
     }
 
     @Override
-    public List<Usuari> buscarAll(Pageable pageable) {
+    public List<Usuari> buscarAll() {
         return null;
     }
 
@@ -40,11 +39,17 @@ public class UsuariRep implements InterfaceRep<Usuari>{
         return null;
     }
 
+    public Usuari getUsuariById(int id) {
+        return jdbcTemplate.queryForObject("SELECT * From terapies where idTerapies=?", new UsuariMapper(), id);
+    }
+
     @Override
     public boolean guardar(Usuari user) {
         try {
-            String sql = String.format("insert into usuaris(Nom,Cognom,Contrassenya,CorreuElectronic,IdRol,Telefon,Newsletter) values('%s', '%s', %s, %s, %d, %d, %d)",
-            user.getNomUsuari(), user.getCognomUsuari(), user.getContrasenyaUsuari(), user.getCorreuUsuari(), user.getIdRol(), user.getTelefonUsuari(), user.getNewsletter());
+            String sql = String.format(
+                    "insert into usuaris(Nom,Cognom,Contrasenya,CorreuElectronic,IdRol,Telefon,Newsletter) values('%s', '%s', '%s','%s', %d, %d, %d)",
+                    user.getNomUsuari(), user.getCognomUsuari(), user.getContrasenyaUsuari(), user.getCorreuUsuari(),
+                    user.getIdRol(), user.getTelefonUsuari(), user.getNewsletter());
             jdbcTemplate.execute(sql);
             return true;
         } catch (Exception e) {
@@ -57,5 +62,5 @@ public class UsuariRep implements InterfaceRep<Usuari>{
     public boolean update(Usuari user) {
         return false;
     }
-    
+
 }

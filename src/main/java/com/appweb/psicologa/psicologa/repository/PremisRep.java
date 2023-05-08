@@ -1,8 +1,6 @@
 package com.appweb.psicologa.psicologa.repository;
 
 import java.util.List;
-
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
 import com.appweb.psicologa.psicologa.model.Permis;
 import org.springframework.stereotype.Repository;
 
@@ -10,7 +8,7 @@ import org.springframework.stereotype.Repository;
 public class PremisRep implements InterfaceRep<Permis>{
 
     @Override
-    public List<Permis> buscarAll(Pageable pageable) {
+    public List<Permis> buscarAll() {
         return null;
     }
 

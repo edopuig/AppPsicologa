@@ -12,9 +12,4 @@ public class AdministratorController {
     public ModelAndView getHome(){
         return new ModelAndView("/index");
     }
-
-    @GetMapping("/blank")
-    public ModelAndView getBlank(){
-        return new ModelAndView("/blank");
-    }
 }
