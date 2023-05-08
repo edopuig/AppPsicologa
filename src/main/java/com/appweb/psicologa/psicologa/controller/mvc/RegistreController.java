@@ -24,12 +24,15 @@ public class RegistreController {
     private HttpSession httpSession;
 
     @GetMapping
-    public ModelAndView getHome(@RequestParam(defaultValue = "new", required = false) String view_name, @RequestParam(defaultValue = "0", required = false) int id){
+    public ModelAndView getHome(@RequestParam(defaultValue = "login", required = false) String nom_entrada){
         
         ModelAndView modelAndView = new ModelAndView("/registre");//Referencia al template terapies.html
 
-        switch (view_name){
-               case "new":
+        switch (nom_entrada){
+               case "login":
+                modelAndView.addObject("usuari", new Usuari()); //Posem una terapia buida per poder informala i crearla
+                break;
+                case "register":
                 modelAndView.addObject("usuari", new Usuari()); //Posem una terapia buida per poder informala i crearla
                 break;
         }
