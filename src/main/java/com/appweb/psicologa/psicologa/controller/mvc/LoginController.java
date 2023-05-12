@@ -1,5 +1,6 @@
 package com.appweb.psicologa.psicologa.controller.mvc;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,9 +14,8 @@ import com.appweb.psicologa.psicologa.repository.UsuariRep;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping("/registre")
-public class RegistreController {
-
+@RequestMapping("/login")
+public class LoginController {
     @Autowired
     private UsuariRep usuariRepository;
 
@@ -24,16 +24,27 @@ public class RegistreController {
 
     @GetMapping
     public ModelAndView getHome(){
-        ModelAndView modelAndView = new ModelAndView("/registre");//Referencia al template registre.html
+        ModelAndView modelAndView = new ModelAndView("/login");//Referencia al template registre.html
         modelAndView.addObject("usuari", new Usuari()); //Posem una terapia buida per poder informala i crearla
         return modelAndView;
     }
 
 
     @PostMapping
-    public String newAndUpdate(@ModelAttribute Usuari usuari){//Quan es clica el boto de registrar, entra en aquesta funcio
-            usuariRepository.guardar(usuari); //guardem el nou usuari a la bbdd
-            httpSession.setAttribute("usuariRegistrat", usuari); //com que entra dintre la aplicacio, guardem l'usuari dintre la sessio per recordarlo mentres estigui dintre
+    public String login(@ModelAttribute Usuari usuari){//Quan es clica el boto de registrar, entra en aquesta funcio
+        if(usuari.getCorreuUsuari() == null || usuari.getContrasenyaUsuari() == null){
+
+        } else{
+       
+           usuari = usuariRepository.login(usuari.getCorreuUsuari(), usuari.getContrasenyaUsuari()); //guardem el nou usuari a la bbdd
+           if(usuari != null){
+                httpSession.setAttribute("usuariRegistrat", usuari); //com que entra dintre la aplicacio, guardem l'usuari dintre la sessio per recordarlo mentres estigui dintre
+                return "redirect:/profile";
+           } else{
+
+           }
+           
+        }
         return "redirect:/";
     }
 }

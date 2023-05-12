@@ -40,7 +40,28 @@ public class UsuariRep implements InterfaceRep<Usuari> {
     }
 
     public Usuari getUsuariById(int id) {
-        return jdbcTemplate.queryForObject("SELECT * From terapies where idTerapies=?", new UsuariMapper(), id);
+        return jdbcTemplate.queryForObject("SELECT * From usuaris where IdUsuaris=?", new UsuariMapper(), id);
+    }
+
+    public Usuari getUsuariByCorreu(String correu) {
+        return jdbcTemplate.queryForObject("SELECT * From usuaris where CorreuElectronic=?", new UsuariMapper(),
+                correu);
+    }
+
+    public Usuari login(String correu, String contra) {
+        try {
+            Usuari usuari = jdbcTemplate.queryForObject(
+                    "SELECT * From usuaris where CorreuElectronic=? AND Contrasenya=?", new UsuariMapper(), correu,
+                    contra);
+            if (usuari != null && usuari.getNomUsuari() != null) {
+                return usuari;
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            System.err.println(e);
+            return null;
+        }
     }
 
     @Override

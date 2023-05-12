@@ -1,37 +1,47 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary px-4 py-3">
-        <a th:href="@{/registre}" th:classappend="${solicitud.getRequestURI()== '/registre' ? 'active' : ''}" class="btn btn-primary active">
+    <div th:if="${usuariRegistrat == null}">
+        <a th:href="@{/login}" class="btn btn-primary active">
             <i class="fa fa-user " aria-hidden="true">
-                <p th:text="${usuariRegistrat != null ? usuariRegistrat.getNomUsuari() : 'Nom'}"></p>
+                <p>Entra</p>
             </i>
         </a>
+    </div>
+    <div th:if="${usuariRegistrat != null}">
+        <a th:href="@{/profile}" class="btn btn-danger active">
+            <i class="fa fa-user " aria-hidden="true">
+                <p th:text="${usuariRegistrat.getNomUsuari()}"></p>
+            </i>
+        </a>
+    </div>
     
-    <a class="navbar-brand h1" th:href="@{'/'}" th:classappend="${solicitud.getRequestURI() == '/' ? 'active' : ''}">Elena Puig Guitart</a>
+    <a class="navbar-brand h1" th:href="@{'/'}">Elena Puig Guitart</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbarPrincipal">
         <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse justify-content-end" id="collapsibleNavbarPrincipal">
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="collapsibleNavbarPrincipal">
         <ul class="navbar-nav">
             <li class="nav-item">
                 <a class="nav-link" th:href="@{'/'}"
-                th:classappend="${solicitud.getRequestURI() == '/' ? 'active' : ''}">Inici</a>
+                    th:classappend="${solicitud.getRequestURI() == '/' ? 'active' : ''}">Inici</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/terapies}" 
-                th:classappend="${solicitud.getRequestURI()== '/terapies' ? 'active' : ''}">Terapies</a>
+                <a class="nav-link" th:href="@{/terapies}"
+                    th:classappend="${solicitud.getRequestURI()== '/terapies' ? 'active' : ''}">Terapies</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/blogs}"
-                th:classappend="${solicitud.getRequestURI() == '/blogs' ? 'active' : ''}">blogs</a>
+                    th:classappend="${solicitud.getRequestURI() == '/blogs' ? 'active' : ''}">blogs</a>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Dropdown</a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">Link</a></li>
-                  <li><a class="dropdown-item" href="#">Another link</a></li>
-                  <li><a class="dropdown-item" href="#">A third link</a></li>
+                    <li><a class="dropdown-item" href="#">Link</a></li>
+                    <li><a class="dropdown-item" href="#">Another link</a></li>
+                    <li><a class="dropdown-item" href="#">A third link</a></li>
                 </ul>
             </li>
         </ul>
