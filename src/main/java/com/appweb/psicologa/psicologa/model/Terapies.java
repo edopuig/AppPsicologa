@@ -8,6 +8,7 @@ public class Terapies {
     private String descripcioTerapies;
     private Date dataTerapia;
     private int duracioTerapia;
+    private String imatge;
 
     public int getIdTerapies() {
         return idTerapies;
@@ -38,5 +39,13 @@ public class Terapies {
     }
     public void setDuracioTerapia(int duracioTerapia) {
         this.duracioTerapia = duracioTerapia;
-    }    
+    }
+    public String getImatge() {
+        return imatge;
+    }
+    public void setImatge(String imatge) {
+        this.imatge = imatge;
+    }
+ 
+        
 }

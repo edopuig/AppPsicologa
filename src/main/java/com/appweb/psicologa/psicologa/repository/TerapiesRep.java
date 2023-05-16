@@ -37,8 +37,8 @@ public class TerapiesRep implements InterfaceRep<Terapies> {
         Date date = new Date(new java.util.Date().getTime());
 
         try {
-            String sql = "insert into terapies(titolTerapies,descripcioTerapies,dataPublicacio) values(?,?,?)";
-                jdbcTemplate.update(sql, terapies.getTitolTerapies(), terapies.getDescripcioTerapies(), date);
+            String sql = "insert into terapies(titolTerapies,descripcioTerapies,imatge,dataPublicacio) values(?,?,?)";
+                jdbcTemplate.update(sql, terapies.getTitolTerapies(), terapies.getDescripcioTerapies(),terapies.getImatge(), date);
             return true;
         } catch (Exception e) {
             System.err.println(e);
@@ -51,8 +51,8 @@ public class TerapiesRep implements InterfaceRep<Terapies> {
         if (terapies.getIdTerapies() > 0) {
             try {
                 String sql = String.format(
-                        "update terapies set titolTerapies='%s', descripcioTerapies='%s' where IdTerapies='%d'",
-                        terapies.getTitolTerapies(), terapies.getDescripcioTerapies(), terapies.getIdTerapies());
+                        "update terapies set titolTerapies='%s', descripcioTerapies='%s', imatge='%s' where IdTerapies='%d'",
+                        terapies.getTitolTerapies(), terapies.getDescripcioTerapies(),terapies.getImatge(), terapies.getIdTerapies());
                 jdbcTemplate.execute(sql);
                 return true;
             } catch (Exception e) {

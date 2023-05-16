@@ -18,6 +18,98 @@
     scrollbar-width: none;
   }
 
+
+/* --- Menu lateral desplegable  --- */
+  
+#menuLateral{
+  background-color: black;
+  color: white;
+  position:relative;
+  height: 100vh;
+  left: 0;
+  top: 0;
+}
+
+#menuLateral a{
+  color: white;
+}
+
+#menu-btn{
+  display: inline-block;
+  cursor: pointer;
+  padding: 10px;
+  width: 50px;
+  box-sizing: border-box;
+}
+
+#menu-btn:hover{
+  background-color: blue;
+}
+
+ #menu-btn .btn-hambuerger{
+  background-color: white;
+  width: 100%;
+  height: 2px;
+  margin: 5px 0;
+}
+
+#menuLateral #menu-item{
+  overflow: hidden;
+}
+
+#menuLateral #menu-item .item{
+  width: 300px;
+}
+
+#menuLateral #menu-item .item .title{
+  font-size: 14px;
+  vertical-align: middle;
+  overflow: hidden;
+  display: inline-block;
+
+}
+
+#menuLateral #menu-item .item a{
+  display: block;
+}
+
+#menuLateral #menu-item .item a:hover{
+  background-color: red;
+}
+
+
+#menuLateral #menu-item .item .title{
+  padding: 10px 0;
+} 
+
+#menuLateral #menu-item .item.separator{
+  height: 1px;
+  border-bottom: solid 1px blue;
+  margin: 15px 0;
+}
+
+.menu-collapsed{
+  width: 0px;
+  padding: 0px;
+}
+
+.menu-collapsed #header #title{
+  width: 0;
+  height: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-collapsed #profile #name{
+  display: none;
+}
+
+.menu-collapsed .item{
+  width: 200px;
+}
+
+
+
  /* Estilos para pantallas grandes */
 @media screen and (min-width: 768px) {
   .terapiaClass {
@@ -28,5 +120,9 @@
   .contents {
     width: 50%;
     float: left;
+  }
+
+  .body-expanded{
+    margin-left: var(--width);
   }
 }

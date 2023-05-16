@@ -39,7 +39,6 @@ public class TerapiesController {
                 break;
             case "new":
                 if (usuariRegistrat != null && usuariRegistrat.getIdRol() == 1) {
-                    modelAndView.addObject("terapies", terapiesRepository.buscarAll());
                     modelAndView.addObject("terapiaNova", new Terapies()); // Posem una terapia buida per poder
                                                                            // informala i crearla
                 } else{ //Si no son usuaris i intentn entrar a la força, els obliguem a anar al login directament.
@@ -50,8 +49,9 @@ public class TerapiesController {
                 break;
             case "update": // ----- De moment nomes la busca, si cliques guardar es fa una nova.
                 if (usuariRegistrat != null && usuariRegistrat.getIdRol() == 1) {
-                    modelAndView.addObject("terapies", terapiesRepository.buscarAll());
-                    modelAndView.addObject("terapiaUpdate", terapiesRepository.buscarPerId(id)); // busca la terapia per la ID per poderla actualitzar
+                    Terapies terapiaModificar = terapiesRepository.buscarPerId(id);
+                    modelAndView.addObject("terapiaUpdate", terapiaModificar); // busca la terapia per la ID per poderla actualitzar
+                    terapiaModificar.setDescripcioTerapies(terapiaModificar.getDescripcioTerapies().replace("<br>", "\n"));
                     break;
                 } else{
                     modelAndView = new ModelAndView("/login");
@@ -65,6 +65,10 @@ public class TerapiesController {
     public String newAndUpdate(@ModelAttribute Terapies terapies) {
         Usuari usuariRegistrat = (Usuari) httpSession.getAttribute("usuariRegistrat"); // Agafem l'usuari que esta registrat
         if (usuariRegistrat != null && usuariRegistrat.getIdRol() == 1) {
+
+            //Canviem les 
+            terapies.setDescripcioTerapies(terapies.getDescripcioTerapies().replace("\n", "<br>")); 
+
             if (terapies.getIdTerapies() > 0) {
                 terapiesRepository.update(terapies);
             } else {
