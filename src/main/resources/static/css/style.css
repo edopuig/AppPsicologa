@@ -93,27 +93,11 @@
   padding: 0px;
 }
 
-.menu-collapsed #header #title{
-  width: 0;
-  height: 0;
-  padding: 0;
-  margin: 0;
-}
-
-.menu-collapsed #profile #name{
-  display: none;
-}
-
-.menu-collapsed .item{
-  width: 200px;
-}
-
-
 
  /* Estilos para pantallas grandes */
 @media screen and (min-width: 768px) {
   .terapiaClass {
-    height:100vh;
+    height:80%;
     margin: 0;
   }
 
