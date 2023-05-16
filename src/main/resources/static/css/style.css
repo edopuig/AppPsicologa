@@ -1,0 +1,32 @@
+.scroller {
+  height: 80vh;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+}
+
+.scroller section {
+    scroll-snap-align: start;
+
+}
+
+  /* Oculta la barra de scroll */
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  body {
+    scrollbar-width: none;
+  }
+
+ /* Estilos para pantallas grandes */
+@media screen and (min-width: 768px) {
+  .terapiaClass {
+    height:100vh;
+    margin: 0;
+  }
+
+  .contents {
+    width: 50%;
+    float: left;
+  }
+}

@@ -81,7 +81,17 @@ public class UsuariRep implements InterfaceRep<Usuari> {
 
     @Override
     public boolean update(Usuari user) {
-        return false;
+        try {
+            String sql = String.format(
+                    "update usuaris set Nom='%s', Cognom='%s', Contrasenya='%s', CorreuElectronic='%s',Telefon='%d',Newsletter='%d' where IdUsuaris='%d'",
+                    user.getNomUsuari(), user.getCognomUsuari(), user.getContrasenyaUsuari(), user.getCorreuUsuari(),
+                    user.getTelefonUsuari(), user.getNewsletter(), user.getIdUsuari());
+            jdbcTemplate.execute(sql);
+            return true;
+        } catch (Exception e) {
+            System.err.println(e);
+            return false;
+        }
     }
 
 }

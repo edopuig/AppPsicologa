@@ -10,67 +10,66 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 
-  <style>
-    .list-container {
-      height: 80vh;
-      overflow-y: scroll;
-    }
-
-    /* Oculta la barra de scroll */
-    ::-webkit-scrollbar {
-      display: none;
-    }
-
-    body {
-      scrollbar-width: none;
-    }
-  </style>
 </head>
 
 <body>
   <div th:replace="~{/components/nav.html}"></div><!-- Posem la barra de navegació -->
   <div th:replace="~{/components/subNav.html}"></div><!-- sub barra de navegació -->
-  <div class="container">
+  <div class="container-fluid">
     <div class="row">
 
-      <!-- a la esquerra posem el que seria -->
-      <ul class="col-sm-4">
+      <!-- a la esquerra posem el que seria 
+      <ul class="col-sm-3">
         <li th:each="terapia : ${terapies}" class="list-group">
-          <a th:href="'#terpiaId' + ${terapia.getIdTerapies}" class="list-group-item list-group-item-action" th:text="${terapia.getTitolTerapies}" data-bs-toggle="collapse" ></a>
+          <a th:href="'#terpiaId' + ${terapia.getIdTerapies}" class="list-group-item list-group-item-action"
+            th:text="${terapia.getTitolTerapies}"></a>
         </li>
-        <li>
+        <li th:if="${usuariRegistrat != null and usuariRegistrat.getIdRol == 1}" class="list-group">
           <a th:href="'/terapies?view_name=new'" class="list-group-item list-group-item-action">Agrega una Terapia</a>
         </li>
-      </ul>
+      </ul>-->
 
-      <!-- Aqui es veu les diferents terapies-->
-      <div class="col-sm-8">
-        <div th:if="${solicitud.getParameter('view_name') == null || solicitud.getParameter('view_name') == 'all'}" id="accordion">
-          <div class="list-container collapse show">
-            <div th:each="terapia : ${terapies}" class="list-group" th:id="'terpiaId' + ${terapia.getIdTerapies}" data-bs-parent="#accordion">
-              <h3 th:text="${terapia.getTitolTerapies}"></h3>
-              <p th:text="${terapia.getDescripcioTerapies}"></p>
-              <div class="row">
-                <div class="col-sm-4">
-                  <button type="button" class="btn btn-primary"> <!-- Aquest es el boto d'editar/actualizar-->
-                    <a class="text-white"
-                      th:href="'/terapies?view_name=update&id=' + ${terapia.getIdTerapies}">Editar</a>
-                  </button>
+      <!-- Aqui es veu el cos de les diferents terapies-->
+      <div class="col-sm-12">
+        <main class="scroller"
+          th:if="${solicitud.getParameter('view_name') == null || solicitud.getParameter('view_name') == 'all'}">
+
+          <section th:each="terapia, iter : ${terapies}" th:id="'terapiaId' + ${terapia.getIdTerapies}"  class="h-100 d-flex align-items-center">
+            <div class="container p-3">
+              <div class="half-post-entry d-block d-lg-flex bg-light row">
+                <div class="col-sm">
+                  <img class="p-1 img-fluid" 
+                  src="https://lh3.googleusercontent.com/pw/AJFCJaUFXJdBXX-S0bhKnU8Ka8o_DEaurfY_llsaVI1EnDgEOLQZ7uC6HFnyqF9TTBSp8LeieZPH5Oh0WknAjoGTVN9huRXr_UKIxquafFoEv66vKeVdi7PeTX4oZx_nV2FvP7iJizZs9m3wW9TzMiP3esWhUCvxzfD14QwF1glKQMJ3QA4A8iAhqh3coUlAy7eBrfrUfdAvisMO-ZAwdJCGBpznKRVb7g282kVaxO2pRGXQQTnseULiWuacvnieJ9jwRcPyuqghtEL18uF-HmcQU_mDLsn8Btw_JqTgRf88wvzWTWwDZ0xU0CqxNXlpnMhr9sLbAlkillrjXxcsOXF7miLRx3Fn6fT5tTbuTMxxJ3EBLhKi8Ba0oEM8CsqjseKD2VysJaGBgV-11tqvAlGEU3RtvBwJNPIdfveOlkBJzwOub20eoyKCsdWdzm1nw3mZjdoiQvyN71LFDXhJRODeGMm3LQg5XvMTQ6IlALN-6rQKz3r-GJTJvQ2pq8tVZX26KLIu8zdCg_-8Y_dQELPs0kD1L1NdtGhxkD5kHpPKiA5YxooHsw2eVe0ojrBFZsduBLip9DfM-lqEuHLLrSCEGwJDTjZFDxFSZFFLCLvpldcUnilyohbyM8ohmbDva-okASXhhMudw582Rpze603znr-2yQM77kMoZci2vCr3D65q2Bq46Qau1xsq_YswBLIom6bU9tztILYE4YQvqpifafvayQge3ILKZA_mQYp-tckINlR9zpLB1UMxLOxgb-5eenv-Kntt1JPls3A_dhgAY2Cee5AyLNez6TQBx9VE5S97ipguDwbFh6tU-vwQRP3tEPC1pDOJPnI1MJKlJTbxKXe-oUE2eQpKMbi50vcg7IGGa_pDSyzNypbRRzT0-3TdCkfU3u-CkH3zkayNoHhjrDegTjGFJFlc9Zh9A9RfKQDtxcCDYJCV8HOBjAFrvQmyzumrWsYhFjGH1N4PkShBhKJX8lABjnSC496yxpz2BA3ckOaDtfuotJSJQdEdqwT1NJo=w1406-h937-s-no?authuser=3" alt="Descripción de la imagen">
+              
                 </div>
-                <div class="col-sm-4">
-                  <form style="margin:0px" th:action="@{/terapies}" th:method="delete">
-                    <input type="hidden" name="id" th:value="${terapia.getIdTerapies}">
-                    <button type="submit" class="btn btn-danger"> Eliminar </button><!-- Aquest es el boto d'eliminar-->
-                  </form>
+                <div class="contents col-sm">
+                  <h3 class="p-1" th:text="${terapia.getTitolTerapies}"></h3>
+                  <p class="p-1" th:text="${terapia.getDescripcioTerapies}"></p>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+            <!-- BOTONS ADMIN -->
+            <div class="row" th:if="${usuariRegistrat != null and usuariRegistrat.getIdRol == 1}">
+              <div class="col-sm-4">
+                <button type="button" class="btn btn-primary"> <!-- Aquest es el boto d'editar/actualizar-->
+                  <a class="text-white" th:href="'/terapies?view_name=update&id=' + ${terapia.getIdTerapies}">Editar</a>
+                </button>
+              </div>
+              <div class="col-sm-4">
+                <form style="margin:0px" th:action="@{/terapies}" th:method="delete">
+                  <input type="hidden" name="id" th:value="${terapia.getIdTerapies}">
+                  <button type="submit" class="btn btn-danger"> Eliminar </button><!-- Aquest es el boto d'eliminar-->
+                </form>
+              </div>
+            </div>
+          </section>
+
+        </main>
 
         <!-- Si el parametre es "new" la pagina mostrara aquest codi, que serveix per agregar una nova terapia-->
-        <div th:if="${solicitud.getParameter('view_name') == 'new'}" class="col-sm-8 m-0">
+        <article th:if="${solicitud.getParameter('view_name') == 'new'}" class="col-sm-8 m-0">
           <form th:action="@{/terapies}" th:method="post" th:object="${terapiaNova}">
             <input type="hidden" th:field="*{idTerapies}">
 
@@ -92,12 +91,12 @@
             </div>
           </form>
 
-          
-        </div>
+
+        </article>
 
 
         <!-- Si el parametre es "update" la pagina mostrara aquest codi, que serveix per actualitzar la terapia seleccionada-->
-        <div th:if="${solicitud.getParameter('view_name') == 'update'}" class="col-sm-7">
+        <article th:if="${solicitud.getParameter('view_name') == 'update'}" class="col-sm-7">
           <form th:action="@{/terapies}" th:method="post" th:object="${terapiaUpdate}">
             <input type="hidden" th:field="*{idTerapies}">
 
@@ -118,7 +117,7 @@
               <button type="reset" class="btn btn-primary">Buidar</button>
             </div>
           </form>
-        </div>
+        </article>
 
       </div>
     </div>

@@ -11,12 +11,15 @@ import org.springframework.web.servlet.ModelAndView;
 import com.appweb.psicologa.psicologa.model.Usuari;
 import com.appweb.psicologa.psicologa.repository.UsuariRep;
 
+import org.springframework.ui.Model;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/profile")
 public class ProfileController {
+    @Autowired
+    private HttpSession httpSession;
 
     @Autowired
     private UsuariRep usuariRepository;
@@ -28,7 +31,7 @@ public class ProfileController {
 
         switch (view_name){
             case "login":
-                 modelAndView.addObject("usuari", new Usuari()); //Busquem totes les terapies i les mostrem
+                 //modelAndView.addObject("usuari", new Usuari()); //Busquem totes les  i les mostrem
                 break;
             case "logout":
                 httpSession.removeAttribute("usuariRegistrat"); // Elimina la sessió "usuariRegistrat"
@@ -39,23 +42,14 @@ public class ProfileController {
         return modelAndView;
     }
 
-    @Autowired
-    private HttpSession httpSession;
 
-    @GetMapping("/profile/login")
-    public String logout(HttpServletResponse response) {
-        httpSession.removeAttribute("usuariRegistrat"); // Elimina la sessió "usuariRegistrat"
-        httpSession.invalidate(); // Invalida la sessió
-        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // Deshabilita la caché del
-                                                                                    // navegador
-
-        return "redirect:/login";
-    }
 
     @PostMapping
-    public String newAndUpdate(@ModelAttribute Usuari usuari) {// Quan es clica el boto de registrar, entra en aquesta
-                                                               // funcio
-        usuariRepository.guardar(usuari); // guardem el nou usuari a la bbdd
-        return "redirect:/";
+    public String UpdateProfile(Model model,@ModelAttribute Usuari usuari, HttpServletResponse response) {// Quan es clica el boto de registrar, entra en aquesta                                                 // funcio
+        usuariRepository.update(usuari); // guardem el nou usuari a la bbdd
+        httpSession.removeAttribute("usuariRegistrat"); //eliminem l'antic usuari
+        httpSession.setAttribute("usuariRegistrat", usuari); //l'agregem amb les noves dades
+       
+        return "redirect:/profile";
     }
 }
