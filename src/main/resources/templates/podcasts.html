@@ -4,7 +4,7 @@
 <!doctype html>
 
 <head>
-  <title>Elena Puig - Blogs</title>
+  <title>Elena Puig - Podcasts</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
@@ -32,14 +32,14 @@
 
           <div th:if="${usuariRegistrat != null and usuariRegistrat.getIdRol == 1}" class=" item separator"></div>
           <div th:if="${usuariRegistrat != null and usuariRegistrat.getIdRol == 1}" class="item">
-            <a th:href="'/activitats/blogs?view_name=new'">
-              <div class="title"> <span> Agrega un Blog</span></div>
+            <a th:href="'/activitats/podcasts?view_name=new'">
+              <div class="title"> <span> Agrega un Curs</span></div>
             </a>
           </div>
         </div>
       </div>
 
-      <!-- Aqui es veu el cos de les diferents blogs-->
+      <!-- Aqui es veu el cos de els diferents podcasts-->
       <div class="col-sm-10">
         <main class="scroller"
           th:if="${solicitud.getParameter('view_name') == null || solicitud.getParameter('view_name') == 'all'}">
@@ -61,11 +61,11 @@
             <div class="row" th:if="${usuariRegistrat != null and usuariRegistrat.getIdRol == 1}">
               <div class="col-sm-4">
                 <button type="button" class="btn btn-primary"> <!-- Aquest es el boto d'editar/actualizar-->
-                  <a class="text-white" th:href="'/activitats/blogs?view_name=update&id=' + ${activitat.getIdActivitat}">Editar</a>
+                  <a class="text-white" th:href="'/activitats/podcasts?view_name=update&id=' + ${activitat.getIdActivitat}">Editar</a>
                 </button>
               </div>
               <div class="col-sm-4">
-                <form style="margin:0px" th:action="@{/activitats/blogs}" th:method="delete">
+                <form style="margin:0px" th:action="@{/activitats/podcasts}" th:method="delete">
                   <input type="hidden" name="id" th:value="${activitat.getIdActivitat}">
                   <button type="submit" class="btn btn-danger"> Eliminar </button><!-- Aquest es el boto d'eliminar-->
                 </form>
@@ -74,13 +74,13 @@
           </section>
         </main>
 
-        <!-- Si el parametre es "new" la pagina mostrara aquest codi, que serveix per agregar un nou blog-->
+        <!-- Si el parametre es "new" la pagina mostrara aquest codi, que serveix per agregar un nou curs-->
         <article th:if="${solicitud.getParameter('view_name') == 'new'}" class="col-sm-8 m-0">
-          <form th:action="@{/activitats/blogs}" th:method="post" th:object="${activitatnova}">
+          <form th:action="@{/activitats/podcasts}" th:method="post" th:object="${activitatnova}">
             <input type="hidden" th:field="*{idActivitat}">
 
             <div class="form-group">
-              <label for="inputTitol">Titol del Blog</label>
+              <label for="inputTitol">Titol del Curs</label>
               <input class="form-control" type="text" th:value="*{titolActivitat}" id="inputTitol"
                 th:field="*{titolActivitat}" name="titolActivitat">
             </div>
@@ -105,13 +105,13 @@
         </article>
 
 
-        <!-- Si el parametre es "update" la pagina mostrara aquest codi, que serveix per actualitzar la blog seleccionada-->
+        <!-- Si el parametre es "update" la pagina mostrara aquest codi, que serveix per actualitzar el curs seleccionat-->
         <article th:if="${solicitud.getParameter('view_name') == 'update'}" class="col-sm-7">
-          <form th:action="@{/activitats/blogs}" th:method="post" th:object="${activiatatUpdate}">
+          <form th:action="@{/activitats/podcasts}" th:method="post" th:object="${activiatatUpdate}">
             <input type="hidden" th:field="*{idActivitat}">
 
             <div class="form-group">
-              <label for="inputTitol">Titol del Blog</label>
+              <label for="inputTitol">Titol del curs</label>
               <input class="form-control" type="text" th:value="*{titolActivitat}" id="inputTitol"
                 th:field="*{titolActivitat}" name="titolActivitat">
             </div>

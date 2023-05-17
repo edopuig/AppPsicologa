@@ -5,7 +5,7 @@ import com.appweb.psicologa.psicologa.model.Permis;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class PremisRep implements InterfaceRep<Permis>{
+public class PremisRep implements InterfacreGeneral<Permis>{
 
     @Override
     public List<Permis> buscarAll() {

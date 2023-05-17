@@ -6,7 +6,7 @@ import com.appweb.psicologa.psicologa.model.Grup;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class GrupRep implements InterfaceRep<Grup>{
+public class GrupRep implements InterfacreGeneral<Grup>{
 
     @Override
     public List<Grup> buscarAll() {

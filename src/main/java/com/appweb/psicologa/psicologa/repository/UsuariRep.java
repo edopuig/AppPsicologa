@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import jakarta.annotation.PostConstruct;
 
 @Repository
-public class UsuariRep implements InterfaceRep<Usuari> {
+public class UsuariRep implements InterfacreGeneral<Usuari> {
 
     @Autowired
     private DataSource dataSource;

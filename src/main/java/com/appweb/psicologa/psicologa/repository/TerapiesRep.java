@@ -15,7 +15,7 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class TerapiesRep implements InterfaceRep<Terapies> {
+public class TerapiesRep implements InterfacreGeneral<Terapies> {
 
     @Autowired
     private DataSource dataSource;

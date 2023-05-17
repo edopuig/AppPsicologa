@@ -3,16 +3,18 @@
     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-    <div class="container-fluid d-flex align-items-center">
-        <div id="menu-btn" class="col-sm-2">
+    <div class="container-fluid d-flex align-items-center row">
+        <div id="menu-btn" class="col-sm-2 mx-2">
             <div class="btn-hambuerger"></div>
             <div class="btn-hambuerger"></div>
             <div class="btn-hambuerger"></div>
         </div>
         
-        <div class="col-sm m-1" th:if="${solicitud.getRequestURI().contains('/terapies')}"> 
+        <div class="col-sm" th:if="${solicitud.getRequestURI().contains('/terapies')}"> 
             <a class="navbar-brand h1 " href="#">Terapies</a>
-            </div>
+        </div>
+        <div class="col-sm" th:if="${solicitud.getRequestURI().contains('/blogs')}"> 
+            <a class="navbar-brand h1 " href="#">Blogs</a>
         </div>
     </div>
 </nav>
