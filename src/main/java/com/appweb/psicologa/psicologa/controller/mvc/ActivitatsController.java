@@ -292,7 +292,7 @@ public class ActivitatsController {
 public ModelAndView getHomeXerrades(@RequestParam(defaultValue = "all", required = false) String view_name,
         @RequestParam(defaultValue = "0", required = false) int id) {
 
-    ModelAndView modelAndView = new ModelAndView("/podcasts");// Referencia al template blogs.html
+    ModelAndView modelAndView = new ModelAndView("/xerrades");// Referencia al template blogs.html
 
     Usuari usuariRegistrat = (Usuari) httpSession.getAttribute("usuariRegistrat"); // Agafem l'usuari que esta
                                                                                    // registrat
