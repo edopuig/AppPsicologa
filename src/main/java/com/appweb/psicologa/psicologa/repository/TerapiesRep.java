@@ -37,7 +37,7 @@ public class TerapiesRep implements InterfaceRep<Terapies> {
         Date date = new Date(new java.util.Date().getTime());
 
         try {
-            String sql = "insert into terapies(titolTerapies,descripcioTerapies,imatge,dataPublicacio) values(?,?,?)";
+            String sql = "insert into terapies(titolTerapies,descripcioTerapies,imatge,dataPublicacio) values(?,?,?,?)";
                 jdbcTemplate.update(sql, terapies.getTitolTerapies(), terapies.getDescripcioTerapies(),terapies.getImatge(), date);
             return true;
         } catch (Exception e) {
