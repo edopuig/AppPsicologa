@@ -26,6 +26,47 @@ public class ActivitatsController {
     @Autowired
     private ActivitatsRep activitatsRepository;
 
+    @GetMapping("/activitatDestacada")
+    public ModelAndView getHomeActivitat(@RequestParam(defaultValue = "all", required = false) String view_name,
+            @RequestParam(defaultValue = "0", required = false) int id) {
+
+        ModelAndView modelAndView = new ModelAndView("/activitats");// Referencia al template blogs.html
+
+        Usuari usuariRegistrat = (Usuari) httpSession.getAttribute("usuariRegistrat"); // Agafem l'usuari que esta
+                                                                                       // registrat
+
+        switch (view_name) {
+            case "all":
+                modelAndView.addObject("activitats", activitatsRepository.buscarActivitatDestacada()); // Busquem totes els
+                                                                                                // blogs i les
+                // mostrem
+                break;
+            case "new":
+                if (usuariRegistrat != null && usuariRegistrat.getIdRol() == 1) {
+                    modelAndView.addObject("activitatnova", new Activitats()); // Posem un blog buit per poder
+                    // informala i crearla
+                } else { // Si no son usuaris i intentn entrar a la força, els obliguem a anar al login
+                         // directament.
+                    modelAndView = new ModelAndView("/login");
+                    modelAndView.addObject("usuari", new Usuari());
+                }
+
+                break;
+            case "update": // ----- De moment nomes la busca, si cliques guardar es fa una nova.
+                if (usuariRegistrat != null && usuariRegistrat.getIdRol() == 1) {
+                    Activitats activitatModificar = activitatsRepository.buscarPerId(id);
+                    modelAndView.addObject("activiatatUpdate", activitatModificar); // busca els blogs per la ID per
+                                                                                    // poderla actualitzar
+                    activitatModificar.setDescripcio(activitatModificar.getDescripcio().replace("<br>", "\n"));
+                    break;
+                } else {
+                    modelAndView = new ModelAndView("/login");
+                    modelAndView.addObject("usuari", new Usuari());
+                }
+        }
+        return modelAndView;
+    }
+/* -------------------------------------- BLOGS ------------------------------------- */
     @GetMapping("/blogs")
     public ModelAndView getHomeBlog(@RequestParam(defaultValue = "all", required = false) String view_name,
             @RequestParam(defaultValue = "0", required = false) int id) {

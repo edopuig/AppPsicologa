@@ -9,12 +9,28 @@
             <div class="btn-hambuerger"></div>
             <div class="btn-hambuerger"></div>
         </div>
+
+        <div class="col-sm" th:if="${solicitud.getRequestURI().contains('/activitatDestacada')}"> 
+            <a class="navbar-brand h1 " href="#">Activitat Destacada</a>
+        </div>
         
         <div class="col-sm" th:if="${solicitud.getRequestURI().contains('/terapies')}"> 
             <a class="navbar-brand h1 " href="#">Terapies</a>
         </div>
         <div class="col-sm" th:if="${solicitud.getRequestURI().contains('/blogs')}"> 
             <a class="navbar-brand h1 " href="#">Blogs</a>
+        </div>
+
+        <div class="col-sm" th:if="${solicitud.getRequestURI().contains('/cursos')}"> 
+            <a class="navbar-brand h1 " href="#">Cursos</a>
+        </div>
+
+        <div class="col-sm" th:if="${solicitud.getRequestURI().contains('/podcasts')}"> 
+            <a class="navbar-brand h1 " href="#">Podcasts</a>
+        </div>
+
+        <div class="col-sm" th:if="${solicitud.getRequestURI().contains('/xerrades')}"> 
+            <a class="navbar-brand h1 " href="#">Xerrades</a>
         </div>
     </div>
 </nav>

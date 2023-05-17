@@ -109,4 +109,8 @@
   .body-expanded{
     margin-left: var(--width);
   }
+
+  .dropdown:hover .dropdown-menu {
+    display: block;
+  }
 }

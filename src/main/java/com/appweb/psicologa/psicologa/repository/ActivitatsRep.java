@@ -40,8 +40,8 @@ public class ActivitatsRep implements InterfacreGeneral<Activitats>{
         Date date = new Date(new java.util.Date().getTime());
 
         try {
-            String sql = "insert into activitats(titolActivitat,descripcio,imgDestacada,tipus,dataPublicacio) values(?,?,?,?,?)";
-                jdbcTemplate.update(sql, activitat.getTitolActivitat(), activitat.getDescripcio(),activitat.getImgDestacada(),activitat.getTipus(), date);
+            String sql = "insert into activitats(titolActivitat,descripcio,imgDestacada,tipus,activitatDestacada,dataPublicacio) values(?,?,?,?,?,?)";
+                jdbcTemplate.update(sql, activitat.getTitolActivitat(), activitat.getDescripcio(),activitat.getImgDestacada(),activitat.getTipus(),activitat.getActivitatDestacada(), date);
             return true;
         } catch (Exception e) {
             System.err.println(e);
@@ -54,8 +54,8 @@ public class ActivitatsRep implements InterfacreGeneral<Activitats>{
         if (activitat.getIdActivitat() > 0) {
             try {
                 String sql = String.format(
-                        "update activitats set titolActivitat='%s', descripcio='%s', imgDestacada='%s' where idActivitat='%d'",
-                        activitat.getTitolActivitat(), activitat.getDescripcio(),activitat.getImgDestacada(), activitat.getIdActivitat());
+                        "update activitats set titolActivitat='%s', descripcio='%s', activitatDestacada='%d' ,imgDestacada='%s' where idActivitat='%d'",
+                        activitat.getTitolActivitat(), activitat.getDescripcio(),activitat.getActivitatDestacada() ,activitat.getImgDestacada(), activitat.getIdActivitat());
                 jdbcTemplate.execute(sql);
                 return true;
             } catch (Exception e) {
@@ -82,5 +82,8 @@ public class ActivitatsRep implements InterfacreGeneral<Activitats>{
     public List<Activitats> buscarAllByTipus(int tipus) {
         return jdbcTemplate.query("SELECT * From activitats Where tipus=?", new ActivitatsMapper(),tipus);
     }
-    
+
+    public List<Activitats> buscarActivitatDestacada() {
+        return jdbcTemplate.query("SELECT * From activitats Where activitatDestacada=1", new ActivitatsMapper());
+    }
 }

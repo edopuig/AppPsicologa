@@ -4,7 +4,7 @@
 <!doctype html>
 
 <head>
-  <title>Elena Puig - Terapies</title>
+  <title>Elena Puig - Llibres</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
@@ -24,38 +24,38 @@
       <div id="menuLateral" class="menu-collapsed col-sm-2">
 
         <div id="menu-item">
-          <div class="item" th:each="terapia : ${terapies}">
-            <a th:href="'#terapiaId' + ${terapia.getIdTerapies}">
-              <div class="title"> <span th:text="${terapia.getTitolTerapies}"></span></div>
+          <div class="item" th:each="llibre : ${llibres}">
+            <a th:href="'#llibreId' + ${llibre.getIdLlibres}">
+              <div class="title"> <span th:text="${llibre.getNomLlibre}"></span></div>
             </a>
           </div>
 
           <div th:if="${usuariRegistrat != null and usuariRegistrat.getIdRol == 1}" class=" item separator"></div>
           <div th:if="${usuariRegistrat != null and usuariRegistrat.getIdRol == 1}" class="item">
-            <a th:href="'/terapies?view_name=new'">
-              <div class="title"> <span> Agrega una Terapia</span></div>
+            <a th:href="'/llibres?view_name=new'">
+              <div class="title"> <span> Agrega un Llibre</span></div>
             </a>
           </div>
         </div>
       </div>
 
-      <!-- Aqui es veu el cos de les diferents terapies-->
+      <!-- Aqui es veu el cos els diferents llibres-->
       <div class="col-sm-10">
         <main class="scroller"
           th:if="${solicitud.getParameter('view_name') == null || solicitud.getParameter('view_name') == 'all'}">
 
-          <section th:each="terapia : ${terapies}" th:id="'terapiaId' + ${terapia.getIdTerapies}"
+          <section th:each="llibre : ${llibres}" th:id="'llibreId' + ${llibre.getIdLlibres}"
             class="h-100 d-flex align-items-center">
             <div class="container p-3">
               <div class="half-post-entry d-block d-lg-flex bg-light row">
                 <div class="col-sm">
-                  <img class="p-1 img-fluid" th:src="${terapia.getImatge()}">
+                  <img class="p-1 img-fluid" th:src="${llibre.getImatge()}">
                 </div>
                 <div class="contents col-sm m-5">
-                  <h3 class="p-1" th:text="${terapia.getTitolTerapies}"></h3>
-                  <p class="p-1" th:utext="${#strings.replace(terapia.getDescripcioTerapies, '\n', '&lt;br&gt;')}"></p>
+                  <h3 class="p-1" th:text="${llibre.getNomLlibre}"></h3>
+                  <p class="p-1" th:utext="${#strings.replace(llibre.getDescripcioLlibre, '\n', '&lt;br&gt;')}"></p>
                   <button type="button" class="btn btn-primary"> <!-- Aquest es el boto d'editar/actualizar-->
-                    <a class="text-white" th:href="@{/contacte}">Demana cita</a>
+                    <a class="text-white" href="https://www.amazon.es/">Compra</a>
                   </button>
                 </div>
               </div>
@@ -64,12 +64,12 @@
             <div class="row" th:if="${usuariRegistrat != null and usuariRegistrat.getIdRol == 1}">
               <div class="col-sm-4">
                 <button type="button" class="btn btn-primary"> <!-- Aquest es el boto d'editar/actualizar-->
-                  <a class="text-white" th:href="'/terapies?view_name=update&id=' + ${terapia.getIdTerapies}">Editar</a>
+                  <a class="text-white" th:href="'/llibres?view_name=update&id=' + ${llibre.getIdLlibres}">Editar</a>
                 </button>
               </div>
               <div class="col-sm-4">
-                <form style="margin:0px" th:action="@{/terapies}" th:method="delete">
-                  <input type="hidden" name="id" th:value="${terapia.getIdTerapies}">
+                <form style="margin:0px" th:action="@{/llibres}" th:method="delete">
+                  <input type="hidden" name="id" th:value="${llibre.getIdLlibres}">
                   <button type="submit" class="btn btn-danger"> Eliminar </button><!-- Aquest es el boto d'eliminar-->
                 </form>
               </div>
@@ -77,15 +77,15 @@
           </section>
         </main>
 
-        <!-- Si el parametre es "new" la pagina mostrara aquest codi, que serveix per agregar una nova terapia-->
+        <!-- Si el parametre es "new" la pagina mostrara aquest codi, que serveix per agregar un nou llibre-->
         <article th:if="${solicitud.getParameter('view_name') == 'new'}" class="col-sm-8 m-0">
-          <form th:action="@{/terapies}" th:method="post" th:object="${terapiaNova}">
-            <input type="hidden" th:field="*{idTerapies}">
+          <form th:action="@{/llibres}" th:method="post" th:object="${llibreNou}">
+            <input type="hidden" th:field="*{idLlibres}">
 
             <div class="form-group">
-              <label for="inputTitol">Titol de la terapia</label>
-              <input class="form-control" type="text" th:value="*{titolTerapies}" id="inputTitol"
-                th:field="*{titolTerapies}" name="Titol">
+              <label for="inputTitol">Titol del Llibre</label>
+              <input class="form-control" type="text" th:value="*{nomLlibre}" id="nomLlibre"
+                th:field="*{nomLlibre}" name="nomLlibre">
             </div>
 
             <div class="form-group">
@@ -95,9 +95,9 @@
             </div>
 
             <div class="form-group">
-              <label for="inputdescripcioTerapiesn">Escriu la teva consulta</label>
-              <textarea class="form-control" type="text" rows="12" th:value="*{descripcioTerapies}"
-                id="inputdescripcioTerapies" th:field="*{descripcioTerapies}" name="descripcioTerapies"></textarea>
+              <label for="descripcioLlibre">Escriu la teva consulta</label>
+              <textarea class="form-control" type="text" rows="12" th:value="*{descripcioLlibre}"
+                id="descripcioLlibre" th:field="*{descripcioLlibre}" name="descripcioLlibre"></textarea>
             </div>
 
             <div class="form-group">
@@ -105,39 +105,37 @@
               <button type="reset" class="btn btn-primary">Buidar</button>
             </div>
           </form>
-
-
         </article>
 
 
-        <!-- Si el parametre es "update" la pagina mostrara aquest codi, que serveix per actualitzar la terapia seleccionada-->
+        <!-- Si el parametre es "update" la pagina mostrara aquest codi, que serveix per actualitzar el llibre seleccionada-->
         <article th:if="${solicitud.getParameter('view_name') == 'update'}" class="col-sm-7">
-          <form th:action="@{/terapies}" th:method="post" th:object="${terapiaUpdate}">
-            <input type="hidden" th:field="*{idTerapies}">
-
-            <div class="form-group">
-              <label for="inputTitol">Titol de la terapia</label>
-              <input class="form-control" type="text" th:value="*{titolTerapies}" id="inputTitol"
-                th:field="*{titolTerapies}" name="Titol">
-            </div>
-
-            <div class="form-group">
-              <label for="imatge">URL Imatge</label>
-              <input class="form-control" type="text" th:value="*{imatge}" id="imatge" th:field="*{imatge}"
-                name="imatge">
-            </div>
-
-            <div class="form-group">
-              <label for="inputdescripcioTerapiesn">Escriu la teva consulta</label>
-              <textarea class="form-control" type="text" rows="12" th:value="*{descripcioTerapies}"
-                id="inputdescripcioTerapies" th:field="*{descripcioTerapies}" name="descripcioTerapies"></textarea>
-            </div>
-
-            <div class="form-group">
-              <button type="submit" class="btn btn-primary">Guardar</button>
-              <button type="reset" class="btn btn-primary">Buidar</button>
-            </div>
-          </form>
+            <form th:action="@{/llibres}" th:method="post" th:object="${llibreUpdate}">
+                <input type="hidden" th:field="*{idLlibres}">
+    
+                <div class="form-group">
+                  <label for="inputTitol">Titol del Llibre</label>
+                  <input class="form-control" type="text" th:value="*{nomLlibre}" id="nomLlibre"
+                    th:field="*{nomLlibre}" name="nomLlibre">
+                </div>
+    
+                <div class="form-group">
+                  <label for="imatge">URL Imatge</label>
+                  <input class="form-control" type="text" th:value="*{imatge}" id="imatge" th:field="*{imatge}"
+                    name="imatge">
+                </div>
+    
+                <div class="form-group">
+                  <label for="descripcioLlibre">Escriu la teva consulta</label>
+                  <textarea class="form-control" type="text" rows="12" th:value="*{descripcioLlibre}"
+                    id="descripcioLlibre" th:field="*{descripcioLlibre}" name="descripcioLlibre"></textarea>
+                </div>
+    
+                <div class="form-group">
+                  <button type="submit" class="btn btn-primary">Guardar</button>
+                  <button type="reset" class="btn btn-primary">Buidar</button>
+                </div>
+              </form>
         </article>
 
       </div>

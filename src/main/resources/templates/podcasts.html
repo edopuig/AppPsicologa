@@ -98,6 +98,14 @@
             </div>
 
             <div class="form-group">
+              <label for="activitatDestacada">Vols que sigui el blog destacat?</label>
+              <select id="option" name="option" th:field="*{activitatDestacada}">
+                <option value="0">No</option>
+                <option value="1">Si</option>
+              </select>
+            </div>
+
+            <div class="form-group">
               <button type="submit" class="btn btn-primary">Guardar</button>
               <button type="reset" class="btn btn-primary">Buidar</button>
             </div>
@@ -126,6 +134,14 @@
               <label for="descripcio">Escriu la teva consulta</label>
               <textarea class="form-control" type="text" rows="12" th:value="*{descripcio}"
                 id="descripcio" th:field="*{descripcio}" name="descripcio"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="activitatDestacada">Vols que sigui el blog destacat?</label>
+              <select id="option" name="option" th:field="*{activitatDestacada}">
+                <option value="0">No</option>
+                <option value="1">Si</option>
+              </select>
             </div>
 
             <div class="form-group">

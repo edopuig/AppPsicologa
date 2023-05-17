@@ -34,17 +34,18 @@
             </li>
 
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Activitats</a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" th:href="@{/activitats/blogs}" th:classappend="${solicitud.getRequestURI() == '/activitats/blogs' ? 'active' : ''}">Blogs</a></li>
-                    <li><a class="dropdown-item" th:href="@{/activitats/cursos}" th:classappend="${solicitud.getRequestURI() == '/activitats/cursos' ? 'active' : ''}">Cursos</a></li>
-                    <li><a class="dropdown-item" th:href="@{/activitats/podcasts}" th:classappend="${solicitud.getRequestURI() == '/activitats/podcasts' ? 'active' : ''}">Podcasts</a></li>
-                    <li><a class="dropdown-item" th:href="@{/activitats/xerrades}" th:classappend="${solicitud.getRequestURI() == '/activitats/xerrades' ? 'active' : ''}">Xerrades</a></li>
+                <a class="nav-link dropdown-toggle" th:href="@{/activitats/activitatDestacada}" role="button" data-bs-toggle="dropdown">Activitats</a>
+                <ul class="dropdown-menu" >
+                    <li><a class="dropdown-item" th:href="@{/activitats/activitatDestacada}">Activitat Destacada</a></li>
+                    <li><a class="dropdown-item" th:href="@{/activitats/blogs}">Blogs</a></li>
+                    <li><a class="dropdown-item" th:href="@{/activitats/cursos}">Cursos</a></li>
+                    <li><a class="dropdown-item" th:href="@{/activitats/podcasts}">Podcasts</a></li>
+                    <li><a class="dropdown-item" th:href="@{/activitats/xerrades}">Xerrades</a></li>
                 </ul>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/blogs}"
+                <a class="nav-link" th:href="@{/llibres}"
                     th:classappend="${solicitud.getRequestURI() == '/llibres' ? 'active' : ''}">Llibres</a>
             </li>
 
