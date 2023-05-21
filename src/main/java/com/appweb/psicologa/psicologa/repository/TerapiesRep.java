@@ -1,7 +1,7 @@
 package com.appweb.psicologa.psicologa.repository;
 
 import java.util.List;
-import java.sql.Date;
+import java.util.Date;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;

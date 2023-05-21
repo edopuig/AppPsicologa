@@ -1,7 +1,7 @@
 package com.appweb.psicologa.psicologa.repository;
 
 import java.util.List;
-import java.sql.Date;
+import java.util.Date;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +18,7 @@ public class ActivitatsRep implements InterfacreGeneral<Activitats>{
     @Autowired
     private DataSource dataSource;
     private JdbcTemplate jdbcTemplate;
+    
 
     @PostConstruct
     public void PostConstruct() {
@@ -85,5 +86,10 @@ public class ActivitatsRep implements InterfacreGeneral<Activitats>{
 
     public List<Activitats> buscarActivitatDestacada() {
         return jdbcTemplate.query("SELECT * From activitats Where activitatDestacada=1", new ActivitatsMapper());
+    }
+
+
+    public Activitats buscarUltimaCreada() {
+        return jdbcTemplate.queryForObject("SELECT * FROM activitats ORDER BY DataPublicacio DESC LIMIT 1;", new ActivitatsMapper());
     }
 }

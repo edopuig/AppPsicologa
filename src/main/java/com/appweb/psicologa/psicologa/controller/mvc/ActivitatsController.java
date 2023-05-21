@@ -1,5 +1,12 @@
 package com.appweb.psicologa.psicologa.controller.mvc;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,7 +20,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.appweb.psicologa.psicologa.model.Activitats;
 import com.appweb.psicologa.psicologa.model.Usuari;
 import com.appweb.psicologa.psicologa.repository.ActivitatsRep;
+import com.appweb.psicologa.psicologa.repository.AgendaRep;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -25,6 +34,9 @@ public class ActivitatsController {
 
     @Autowired
     private ActivitatsRep activitatsRepository;
+
+    @Autowired
+    private AgendaRep repAgenda;
 
     @GetMapping("/activitatDestacada")
     public ModelAndView getHomeActivitat(@RequestParam(defaultValue = "all", required = false) String view_name,
@@ -158,8 +170,7 @@ public class ActivitatsController {
                 break;
             case "new":
                 if (usuariRegistrat != null && usuariRegistrat.getIdRol() == 1) {
-                    modelAndView.addObject("activitatnova", new Activitats()); // Posem un blog buit per poder
-                    // informala i crearla
+                    modelAndView.addObject("activitatnova", new Activitats()); // Posem un blog buit per poder informala i crearla
                 } else { // Si no son usuaris i intentn entrar a la força, els obliguem a anar al login
                          // directament.
                     modelAndView = new ModelAndView("/login");
@@ -183,9 +194,31 @@ public class ActivitatsController {
     }
 
     @PostMapping("/cursos")
-    public String newAndUpdateCursos(@ModelAttribute Activitats activitat) {
-        Usuari usuariRegistrat = (Usuari) httpSession.getAttribute("usuariRegistrat"); // Agafem l'usuari que esta
-                                                                                       // registrat
+    public String newAndUpdateCursos(@ModelAttribute Activitats activitat, HttpServletRequest request) {
+        Usuari usuariRegistrat = (Usuari) httpSession.getAttribute("usuariRegistrat"); // Agafem l'usuari que esta registrat
+
+
+        Enumeration<String> parameterNames = request.getParameterNames();
+        List<Date> datas = new ArrayList<>();
+    
+        while (parameterNames.hasMoreElements()) {
+            String paramName = parameterNames.nextElement();
+    
+            if (paramName.startsWith("data[")) {
+                String[] paramValues = request.getParameterValues(paramName);
+    
+                for (String paramValue : paramValues) {
+                    try {
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                        Date date = dateFormat.parse(paramValue);
+                        datas.add(date);
+                    } catch (ParseException e) {
+                        // 
+                    }
+                }
+            }
+        }
+                                                                                       
         if (usuariRegistrat != null && usuariRegistrat.getIdRol() == 1) {
 
             // Canviem els enters
@@ -196,8 +229,16 @@ public class ActivitatsController {
             if (activitat.getIdActivitat() > 0) {
                 activitatsRepository.update(activitat);
             } else {
-                activitatsRepository.guardar(activitat);
+                activitatsRepository.guardar(activitat); //Guardem l'activitat perq generi el seu ID
+                activitat = activitatsRepository.buscarUltimaCreada(); //Recuparem l'activitat que s'acava de crear
+                if(activitat != null){
+                    repAgenda.guardarByIdActivitatData(datas,activitat.getIdActivitat());
+                }
+                
+                
             }
+
+            
         }
         return "redirect:/activitats/cursos";
     }
