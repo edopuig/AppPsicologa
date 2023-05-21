@@ -3,6 +3,7 @@ package com.appweb.psicologa.psicologa.repository;
 import java.util.Date;
 import java.util.List;
 import javax.sql.DataSource;
+import java.text.SimpleDateFormat;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -91,8 +92,21 @@ public class AgendaRep implements InterfacreGeneral<Agenda>{
         }
     }
 
-    public Agenda buscarPerIdActivitat(int idActivitat) {
-        return jdbcTemplate.queryForObject("SELECT * From agendactivitat where IdActivitat=?", new AgendaMapper(), idActivitat);
+    public boolean updateByIdActivitatData(List<Date> dataActivitat, int idActivitat) {
+        try {
+            for(Date data : dataActivitat){
+                String sql = "UPDATE agendactivitat SET DataActivitat = ? WHERE IdActivitat = ?";
+                jdbcTemplate.update(sql, data, idActivitat);
+            }
+            return true;
+        } catch (Exception e) {
+            System.err.println(e);
+            return false;
+        }
+    }
+
+    public List<Agenda> buscarPerIdActivitat(int idActivitat) {
+        return jdbcTemplate.query("SELECT * From agendactivitat where IdActivitat=?", new AgendaMapper(), idActivitat);
     }
 
 

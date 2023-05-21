@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.appweb.psicologa.psicologa.model.Activitats;
+import com.appweb.psicologa.psicologa.model.Agenda;
 import com.appweb.psicologa.psicologa.model.Usuari;
 import com.appweb.psicologa.psicologa.repository.ActivitatsRep;
 import com.appweb.psicologa.psicologa.repository.AgendaRep;
@@ -36,7 +37,7 @@ public class ActivitatsController {
     private ActivitatsRep activitatsRepository;
 
     @Autowired
-    private AgendaRep repAgenda;
+    private AgendaRep agendaRep;
 
     @GetMapping("/activitatDestacada")
     public ModelAndView getHomeActivitat(@RequestParam(defaultValue = "all", required = false) String view_name,
@@ -159,31 +160,48 @@ public class ActivitatsController {
 
         ModelAndView modelAndView = new ModelAndView("/cursos");// Referencia al template blogs.html
 
-        Usuari usuariRegistrat = (Usuari) httpSession.getAttribute("usuariRegistrat"); // Agafem l'usuari que esta
-                                                                                       // registrat
+        Usuari usuariRegistrat = (Usuari) httpSession.getAttribute("usuariRegistrat"); // Agafem l'usuari que estaregistrat
+        
 
         switch (view_name) {
             case "all":
-                modelAndView.addObject("activitats", activitatsRepository.buscarAllByTipus(2)); // Busquem totes els
-                                                                                                // blogs i les
-                // mostrem
+                List<Agenda> dates = new ArrayList<>();
+                List<Activitats> activitats = activitatsRepository.buscarAllByTipus(2); //Busquem tots els cursos
+                modelAndView.addObject("activitats", activitats); // Busquem totes els blogs i les mostrem
+
+                for(Activitats activitat : activitats){ //Busquem quines activitats tenen alguna data agendada
+                    List<Agenda> agendes = agendaRep.buscarPerIdActivitat(activitat.getIdActivitat());
+                    for(Agenda agenda: agendes){ //De les ativitats que tinguin una agenda, les afegim a la llista
+                        dates.add(agenda);
+                    }
+                }
+              
+                modelAndView.addObject("agendes", dates);
+
                 break;
             case "new":
                 if (usuariRegistrat != null && usuariRegistrat.getIdRol() == 1) {
                     modelAndView.addObject("activitatnova", new Activitats()); // Posem un blog buit per poder informala i crearla
-                } else { // Si no son usuaris i intentn entrar a la força, els obliguem a anar al login
-                         // directament.
+                    
+                } else { // Si no son usuaris i intentn entrar a la força, els obliguem a anar al login directament.
                     modelAndView = new ModelAndView("/login");
                     modelAndView.addObject("usuari", new Usuari());
                 }
 
                 break;
-            case "update": // ----- De moment nomes la busca, si cliques guardar es fa una nova.
+            case "update":
                 if (usuariRegistrat != null && usuariRegistrat.getIdRol() == 1) {
+                    List<Agenda> datesUpdate = new ArrayList<>();
+
                     Activitats activitatModificar = activitatsRepository.buscarPerId(id);
-                    modelAndView.addObject("activiatatUpdate", activitatModificar); // busca els blogs per la ID per
-                                                                                    // poderla actualitzar
+                    modelAndView.addObject("activiatatUpdate", activitatModificar); // busca els blogs per la ID per poderla actualitzar
                     activitatModificar.setDescripcio(activitatModificar.getDescripcio().replace("<br>", "\n"));
+
+                    List<Agenda> agendes = agendaRep.buscarPerIdActivitat(activitatModificar.getIdActivitat());
+                    for(Agenda agenda: agendes){ //De les ativitats que tinguin una agenda, les afegim a la llista
+                        datesUpdate.add(agenda);
+                    }
+                    modelAndView.addObject("agendesUpdate", datesUpdate);
                     break;
                 } else {
                     modelAndView = new ModelAndView("/login");
@@ -197,20 +215,22 @@ public class ActivitatsController {
     public String newAndUpdateCursos(@ModelAttribute Activitats activitat, HttpServletRequest request) {
         Usuari usuariRegistrat = (Usuari) httpSession.getAttribute("usuariRegistrat"); // Agafem l'usuari que esta registrat
 
-
         Enumeration<String> parameterNames = request.getParameterNames();
         List<Date> datas = new ArrayList<>();
     
         while (parameterNames.hasMoreElements()) {
             String paramName = parameterNames.nextElement();
-    
             if (paramName.startsWith("data[")) {
                 String[] paramValues = request.getParameterValues(paramName);
     
                 for (String paramValue : paramValues) {
                     try {
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                         Date date = dateFormat.parse(paramValue);
+                        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+                        String dataFormatejada = formatter.format(date);
+                        
+                        date = formatter.parse(dataFormatejada);
                         datas.add(date);
                     } catch (ParseException e) {
                         // 
@@ -228,17 +248,15 @@ public class ActivitatsController {
 
             if (activitat.getIdActivitat() > 0) {
                 activitatsRepository.update(activitat);
+                agendaRep.guardarByIdActivitatData(datas,activitat.getIdActivitat());
+
             } else {
                 activitatsRepository.guardar(activitat); //Guardem l'activitat perq generi el seu ID
                 activitat = activitatsRepository.buscarUltimaCreada(); //Recuparem l'activitat que s'acava de crear
                 if(activitat != null){
-                    repAgenda.guardarByIdActivitatData(datas,activitat.getIdActivitat());
+                    agendaRep.guardarByIdActivitatData(datas,activitat.getIdActivitat());
                 }
-                
-                
             }
-
-            
         }
         return "redirect:/activitats/cursos";
     }
@@ -399,4 +417,5 @@ public String eliminarXerradaById(@RequestParam int id) {
     }
     return "redirect:/activitats/xerrades";
 }
+
 }

@@ -90,6 +90,6 @@ public class ActivitatsRep implements InterfacreGeneral<Activitats>{
 
 
     public Activitats buscarUltimaCreada() {
-        return jdbcTemplate.queryForObject("SELECT * FROM activitats ORDER BY DataPublicacio DESC LIMIT 1;", new ActivitatsMapper());
+        return jdbcTemplate.queryForObject("SELECT * FROM activitats ORDER BY IdActivitat DESC LIMIT 1;", new ActivitatsMapper());
     }
 }
