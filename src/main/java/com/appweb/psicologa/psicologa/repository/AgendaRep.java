@@ -3,7 +3,6 @@ package com.appweb.psicologa.psicologa.repository;
 import java.util.Date;
 import java.util.List;
 import javax.sql.DataSource;
-import java.text.SimpleDateFormat;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

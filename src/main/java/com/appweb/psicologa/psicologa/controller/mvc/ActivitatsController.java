@@ -263,8 +263,7 @@ public class ActivitatsController {
 
     @DeleteMapping("/cursos")
     public String eliminarCursosById(@RequestParam int id) {
-        Usuari usuariRegistrat = (Usuari) httpSession.getAttribute("usuariRegistrat"); // Agafem l'usuari que esta
-                                                                                       // registrat
+        Usuari usuariRegistrat = (Usuari) httpSession.getAttribute("usuariRegistrat"); // Agafem l'usuari que esta registrat
         if (usuariRegistrat != null && usuariRegistrat.getIdRol() == 1) {
             activitatsRepository.eliminarById(id);
         }
