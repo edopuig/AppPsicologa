@@ -1,0 +1,21 @@
+body, html {height: 100%}
+.bgimg {
+  background-image: url('https://static.vecteezy.com/system/resources/previews/001/984/880/original/abstract-colorful-geometric-overlapping-background-and-texture-free-vector.jpg');
+  min-height: 100%;
+  background-position: center;
+  background-size: cover;
+}
+
+.bgimg1 {
+    background-image: url('https://thumbs.dreamstime.com/b/autumn-landscape-nature-background-dried-flowers-water-drops-rain-field-banner-selective-focus-75038244.jpg');
+    min-height: 100%;
+    background-position: center;
+    background-size: cover;
+  }
+
+  .bgimg2 {
+    background-image: url('https://img.freepik.com/free-photo/abstract-grunge-decorative-relief-navy-blue-stucco-wall-texture-wide-angle-rough-colored-background_1258-28311.jpg?w=2000');
+    min-height: 100%;
+    background-position: center;
+    background-size: cover;
+  }

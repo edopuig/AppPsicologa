@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.appweb.psicologa.psicologa.model.Usuari;
 import com.appweb.psicologa.psicologa.repository.UsuariRep;
 
@@ -31,7 +33,7 @@ public class LoginController {
 
 
     @PostMapping
-    public String login(@ModelAttribute Usuari usuari){//Quan es clica el boto de registrar, entra en aquesta funcio
+    public String login(@ModelAttribute Usuari usuari, RedirectAttributes redirectAtribut){//Quan es clica el boto de registrar, entra en aquesta funcio
         if(usuari.getCorreuUsuari() == null || usuari.getContrasenyaUsuari() == null){
 
         } else{
@@ -41,10 +43,10 @@ public class LoginController {
                 httpSession.setAttribute("usuariRegistrat", usuari); //com que entra dintre la aplicacio, guardem l'usuari dintre la sessio per recordarlo mentres estigui dintre
                 return "redirect:/profile";
            } else{
-
+            redirectAtribut.addFlashAttribute("id", null).addFlashAttribute("error", "No s'ha trobat cap usuari amb aquestes credencials");
            }
            
         }
-        return "redirect:/";
+        return "redirect:/login";
     }
 }
