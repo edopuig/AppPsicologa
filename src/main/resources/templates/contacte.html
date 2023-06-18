@@ -34,7 +34,39 @@
         <div class="row d-flex justify-content-center align-items-center h-100">
           <div class="col-12 col-md-9 col-lg-7 col-xl-6">
             <div class="card" style="border-radius: 15px;">
-              <div class="card-body p-5">
+
+              <div class="card-body p-5" th:if="${usuariRegistrat != null}">
+                <h2 class="text-uppercase text-center mb-5">Formulari contacte</h2>
+
+
+                <form th:action="@{/profile}" th:method="post" th:object="${correu}">
+                  <input type="hidden" th:field="*{nom}">
+                  <div class=" mb-3 mt-3">
+                    <label class="form-label" for="nomUsuari">Nom</label>
+                    <input type="text" id="nomUsuari" class="form-control form-control-lg"
+                      th:value="${usuariRegistrat.getNomUsuari()}" th:field="*{nom}" name="nomUsuari" required/>
+                  </div>
+                  <div class="mb-3 mt-3">
+                    <label class="form-label" for="Email">El teu Email</label>
+                    <input type="email" id="Email" class="form-control form-control-lg"
+                      th:value="${usuariRegistrat.getCorreuUsuari()}" th:field="*{correu}" name="correuUsuari" required/>
+                  </div>
+                  <div class="mb-3 mt-3">
+                    <label for="consulta">Escriu la teva consulta</label>
+                    <textarea class="form-control" id="consulta" rows="3" th:value="*{consulta}"
+                      th:field="*{consulta}"></textarea>
+                  </div>
+                  <div class="form-check mb-3">
+                    <label class="form-check-label">
+                      <input class="form-check-input" type="checkbox" name="remember"> Remember me
+                    </label>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+              </div>
+
+
+              <div class="card-body p-5" th:if="${usuariRegistrat == null}">
                 <h2 class="text-uppercase text-center mb-5">Formulari contacte</h2>
 
                 <form th:action="@{/contacte}" th:method="post" th:object="${correu}">
@@ -43,12 +75,12 @@
                   <div class="mb-3 mt-3">
                     <label for="nom">Nom:</label>
                     <input type="text" class="form-control" id="nom" th:value="*{nom}" th:field="*{nom}"
-                      placeholder="Escriu el teu nom" name="nom">
+                      placeholder="Escriu el teu nom" name="nom" required>
                   </div>
                   <div class="mb-3 mt-3">
                     <label for="email">Email:</label>
                     <input type="email" class="form-control" id="email" th:value="*{correu}" th:field="*{correu}"
-                      placeholder="Enter email" name="email">
+                      placeholder="Enter email" name="email" required>
                   </div>
                   <div class="md-form">
                     <label for="consulta">Escriu la teva consulta</label>

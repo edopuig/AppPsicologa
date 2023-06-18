@@ -14,7 +14,7 @@ import com.appweb.psicologa.psicologa.mapper.ParticipacioMapper;
 import com.appweb.psicologa.psicologa.model.Participacio;
 
 @Repository
-public class ParticipacioRep implements InterfacreGeneral<Participacio>{
+public class ParticipacioRep implements InterfacreGeneral<Participacio> {
 
     @Autowired
     private DataSource dataSource;
@@ -32,14 +32,19 @@ public class ParticipacioRep implements InterfacreGeneral<Participacio>{
 
     @Override
     public Participacio buscarPerId(int id) {
-        return jdbcTemplate.queryForObject("SELECT * From participacio where IdParticipacio=?", new ParticipacioMapper(), id);
+        return jdbcTemplate.queryForObject("SELECT * From participacio where IdParticipacio=?",
+        new ParticipacioMapper(), id);
+    }
+
+    public List<Participacio> buscarPerIdAgenda(int id) {
+        return jdbcTemplate.query("SELECT * From participacio where idAgenda=?", new ParticipacioMapper(), id);
     }
 
     @Override
     public boolean guardar(Participacio participacio) {
         try {
             String sql = "insert into participacio(IdAgenda,IdUsuari) values(?,?)";
-                jdbcTemplate.update(sql, participacio.getIdAgenda(), participacio.getIdUsuari());
+            jdbcTemplate.update(sql, participacio.getIdAgenda(), participacio.getIdUsuari());
             return true;
         } catch (Exception e) {
             System.err.println(e);
@@ -64,7 +69,6 @@ public class ParticipacioRep implements InterfacreGeneral<Participacio>{
         return false;
     }
 
-    
     public boolean eliminarById(int id) {
         try {
             String sql = String.format(
@@ -76,5 +80,5 @@ public class ParticipacioRep implements InterfacreGeneral<Participacio>{
             return false;
         }
     }
-    
+
 }

@@ -38,17 +38,17 @@
                                     <input type="hidden" th:field="*{idUsuari}">
 
                                     <div class="form-outline mb-4">
-                                        <input id="Nom" type="text" class="form-control form-control-lg" th:value="*{nomUsuari}" th:field="*{nomUsuari}" name="nomUsuari"/>
+                                        <input id="Nom" type="text" class="form-control form-control-lg" th:value="*{nomUsuari}" th:field="*{nomUsuari}" name="nomUsuari"required/>
                                         <label class="form-label" for="Nom">El teu nom</label>
                                     </div>
 
                                     <div class="form-outline mb-4">
-                                        <input type="email" id="Email" class="form-control form-control-lg" th:value="*{correuUsuari}" th:field="*{correuUsuari}" name="correuUsuari"/>
+                                        <input type="email" id="Email" class="form-control form-control-lg" th:value="*{correuUsuari}" th:field="*{correuUsuari}" name="correuUsuari" required/>
                                         <label class="form-label" for="Email">El teu Email</label>
                                     </div>
 
                                     <div class="form-outline mb-4">
-                                        <input type="password" id="Contrasenya" class="form-control form-control-lg" th:value="*{contrasenyaUsuari}" th:field="*{contrasenyaUsuari}" name="contrasenyaUsuari"/>
+                                        <input type="password" id="Contrasenya" class="form-control form-control-lg" th:value="*{contrasenyaUsuari}" th:field="*{contrasenyaUsuari}" name="contrasenyaUsuari" required/>
                                         <label class="form-label" for="Contrasenya">Contrasenya</label>
                                     </div>
 

@@ -11,6 +11,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.appweb.psicologa.psicologa.model.Correu;
 //import com.appweb.psicologa.psicologa.services.correuSender;
+import com.appweb.psicologa.psicologa.model.Usuari;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/contacte")
@@ -23,10 +27,20 @@ public class ContacteController {
     private ModelAndView modelAndView;
 
     @GetMapping
-    public ModelAndView getHome() {
+    public ModelAndView getHome(HttpServletRequest request) {
 
+        HttpSession session = request.getSession();
+        Usuari usuariRegistrat = (Usuari) session.getAttribute("usuariRegistrat"); //recuperem l'objecte del usuari, per posar la info automaticament
+        Correu correu = new Correu();
+       if(usuariRegistrat != null){
+         
+        correu.setNom(usuariRegistrat.getNomUsuari());
+        correu.setCorreu(usuariRegistrat.getCorreuUsuari());
+        
+       }
+       
         modelAndView = new ModelAndView("/contacte");// Referencia al template terapies.html
-        modelAndView.addObject("correu", new Correu());
+        modelAndView.addObject("correu", correu);
         return modelAndView;
     }
 

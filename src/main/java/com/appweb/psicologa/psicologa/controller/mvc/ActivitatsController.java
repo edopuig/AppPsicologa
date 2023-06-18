@@ -20,9 +20,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.appweb.psicologa.psicologa.model.Activitats;
 import com.appweb.psicologa.psicologa.model.Agenda;
+import com.appweb.psicologa.psicologa.model.Participacio;
 import com.appweb.psicologa.psicologa.model.Usuari;
 import com.appweb.psicologa.psicologa.repository.ActivitatsRep;
 import com.appweb.psicologa.psicologa.repository.AgendaRep;
+import com.appweb.psicologa.psicologa.repository.ParticipacioRep;
+import com.appweb.psicologa.psicologa.repository.UsuariRep;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -40,6 +43,12 @@ public class ActivitatsController {
     @Autowired
     private AgendaRep agendaRep;
 
+    @Autowired
+    private UsuariRep usuariRep;
+
+    @Autowired
+    private ParticipacioRep participacioRep;
+
     @GetMapping("/activitatDestacada")
     public ModelAndView getHomeActivitat(@RequestParam(defaultValue = "all", required = false) String view_name,
             @RequestParam(defaultValue = "0", required = false) int id) {
@@ -51,8 +60,9 @@ public class ActivitatsController {
 
         switch (view_name) {
             case "all":
-                modelAndView.addObject("activitats", activitatsRepository.buscarActivitatDestacada()); // Busquem totes els
-                                                                                                // blogs i les
+                modelAndView.addObject("activitats", activitatsRepository.buscarActivitatDestacada()); // Busquem totes
+                                                                                                       // els
+                // blogs i les
                 // mostrem
                 break;
             case "new":
@@ -80,7 +90,11 @@ public class ActivitatsController {
         }
         return modelAndView;
     }
-/* -------------------------------------- BLOGS ------------------------------------- */
+
+    /*
+     * -------------------------------------- BLOGS
+     * -------------------------------------
+     */
     @GetMapping("/blogs")
     public ModelAndView getHomeBlog(@RequestParam(defaultValue = "all", required = false) String view_name,
             @RequestParam(defaultValue = "0", required = false) int id) {
@@ -140,8 +154,8 @@ public class ActivitatsController {
                 activitatsRepository.guardar(activitat);
                 redirectAtribut.addFlashAttribute("correcte", "Blog creat correctament");
             }
-        } else{
-             redirectAtribut.addFlashAttribute("error", "Hi ha hagut algun problema");
+        } else {
+            redirectAtribut.addFlashAttribute("error", "Hi ha hagut algun problema");
         }
         return "redirect:/activitats/blogs";
     }
@@ -158,7 +172,8 @@ public class ActivitatsController {
     }
 
     /**
-     * ---------------------------------------------------- CURSOS----------------------------------------------------*/
+     * ----------------------------------------------------  * CURSOS----------------------------------------------------
+     */
 
     @GetMapping("/cursos")
     public ModelAndView getHomeCursos(@RequestParam(defaultValue = "all", required = false) String view_name,
@@ -166,30 +181,32 @@ public class ActivitatsController {
 
         ModelAndView modelAndView = new ModelAndView("/cursos");// Referencia al template blogs.html
 
-        Usuari usuariRegistrat = (Usuari) httpSession.getAttribute("usuariRegistrat"); // Agafem l'usuari que estaregistrat
-        
+        Usuari usuariRegistrat = (Usuari) httpSession.getAttribute("usuariRegistrat"); // Agafem l'usuari que
+                                                                                       // estaregistrat
 
         switch (view_name) {
             case "all":
                 List<Agenda> dates = new ArrayList<>();
-                List<Activitats> activitats = activitatsRepository.buscarAllByTipus(2); //Busquem tots els cursos
+                List<Activitats> activitats = activitatsRepository.buscarAllByTipus(2); // Busquem tots els cursos
                 modelAndView.addObject("activitats", activitats); // Busquem totes els blogs i les mostrem
 
-                for(Activitats activitat : activitats){ //Busquem quines activitats tenen alguna data agendada
+                for (Activitats activitat : activitats) { // Busquem quines activitats tenen alguna data agendada
                     List<Agenda> agendes = agendaRep.buscarPerIdActivitat(activitat.getIdActivitat());
-                    for(Agenda agenda: agendes){ //De les ativitats que tinguin una agenda, les afegim a la llista
+                    for (Agenda agenda : agendes) { // De les ativitats que tinguin una agenda, les afegim a la llista
                         dates.add(agenda);
                     }
                 }
-              
+
                 modelAndView.addObject("agendes", dates);
 
                 break;
             case "new":
                 if (usuariRegistrat != null && usuariRegistrat.getIdRol() == 1) {
-                    modelAndView.addObject("activitatnova", new Activitats()); // Posem un blog buit per poder informala i crearla
-                    
-                } else { // Si no son usuaris i intentn entrar a la força, els obliguem a anar al login directament.
+                    modelAndView.addObject("activitatnova", new Activitats()); // Posem un blog buit per poder informala
+                                                                               // i crearla
+
+                } else { // Si no son usuaris i intentn entrar a la força, els obliguem a anar al login
+                         // directament.
                     modelAndView = new ModelAndView("/login");
                     modelAndView.addObject("usuari", new Usuari());
                 }
@@ -197,17 +214,26 @@ public class ActivitatsController {
                 break;
             case "update":
                 if (usuariRegistrat != null && usuariRegistrat.getIdRol() == 1) {
-                    List<Agenda> datesUpdate = new ArrayList<>();
+
+                    List<Usuari> usuarisApuntatsCurs = new ArrayList<>();
 
                     Activitats activitatModificar = activitatsRepository.buscarPerId(id);
-                    modelAndView.addObject("activiatatUpdate", activitatModificar); // busca els blogs per la ID per poderla actualitzar
+                    modelAndView.addObject("activiatatUpdate", activitatModificar); // busca els blogs per la ID per
+                                                                                    // poderla actualitzar
                     activitatModificar.setDescripcio(activitatModificar.getDescripcio().replace("<br>", "\n"));
 
-                    List<Agenda> agendes = agendaRep.buscarPerIdActivitat(activitatModificar.getIdActivitat());
-                    for(Agenda agenda: agendes){ //De les ativitats que tinguin una agenda, les afegim a la llista
-                        datesUpdate.add(agenda);
+                   
+                    //Busquem les agendes que te l'activitat que estem modificant.
+                    List<Agenda> datesUpdate = agendaRep.buscarPerIdActivitat(activitatModificar.getIdActivitat());                    
+
+                    for(Agenda agenda : datesUpdate){//Per cada agenda, hem de mirar cuants usuaris s'han unit
+                        List<Participacio> patisipacionsList = participacioRep.buscarPerIdAgenda(agenda.getIdAgenda());
+                        for(Participacio parti : patisipacionsList){
+                            usuarisApuntatsCurs.add(usuariRep.getUsuariById(parti.getIdUsuari()));
+                        }
                     }
                     modelAndView.addObject("agendesUpdate", datesUpdate);
+                     modelAndView.addObject("participants", usuarisApuntatsCurs);
                     break;
                 } else {
                     modelAndView = new ModelAndView("/login");
@@ -218,33 +244,35 @@ public class ActivitatsController {
     }
 
     @PostMapping("/cursos")
-    public String newAndUpdateCursos(@ModelAttribute Activitats activitat, HttpServletRequest request, RedirectAttributes redirectAtribut) {
-        Usuari usuariRegistrat = (Usuari) httpSession.getAttribute("usuariRegistrat"); // Agafem l'usuari que esta registrat
+    public String newAndUpdateCursos(@ModelAttribute Activitats activitat, HttpServletRequest request,
+            RedirectAttributes redirectAtribut) {
+        Usuari usuariRegistrat = (Usuari) httpSession.getAttribute("usuariRegistrat"); // Agafem l'usuari que esta
+                                                                                       // registrat
 
         Enumeration<String> parameterNames = request.getParameterNames();
         List<Date> datas = new ArrayList<>();
-    
+
         while (parameterNames.hasMoreElements()) {
             String paramName = parameterNames.nextElement();
             if (paramName.startsWith("data[")) {
                 String[] paramValues = request.getParameterValues(paramName);
-    
+
                 for (String paramValue : paramValues) {
                     try {
                         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                         Date date = dateFormat.parse(paramValue);
                         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
                         String dataFormatejada = formatter.format(date);
-                        
+
                         date = formatter.parse(dataFormatejada);
                         datas.add(date);
                     } catch (ParseException e) {
-                        // 
+                        //
                     }
                 }
             }
         }
-                                                                                       
+
         if (usuariRegistrat != null && usuariRegistrat.getIdRol() == 1) {
 
             // Canviem els enters
@@ -254,14 +282,14 @@ public class ActivitatsController {
 
             if (activitat.getIdActivitat() > 0) {
                 activitatsRepository.update(activitat);
-                agendaRep.guardarByIdActivitatData(datas,activitat.getIdActivitat());
+                agendaRep.guardarByIdActivitatData(datas, activitat.getIdActivitat());
                 redirectAtribut.addFlashAttribute("correcte", "Curs actualitzat correctament");
 
             } else {
-                activitatsRepository.guardar(activitat); //Guardem l'activitat perq generi el seu ID
-                activitat = activitatsRepository.buscarUltimaCreada(); //Recuparem l'activitat que s'acava de crear
-                if(activitat != null){
-                    agendaRep.guardarByIdActivitatData(datas,activitat.getIdActivitat());
+                activitatsRepository.guardar(activitat); // Guardem l'activitat perq generi el seu ID
+                activitat = activitatsRepository.buscarUltimaCreada(); // Recuparem l'activitat que s'acava de crear
+                if (activitat != null) {
+                    agendaRep.guardarByIdActivitatData(datas, activitat.getIdActivitat());
                     redirectAtribut.addFlashAttribute("correcte", "Curs creat correctament");
                 }
             }
@@ -271,7 +299,8 @@ public class ActivitatsController {
 
     @DeleteMapping("/cursos")
     public String eliminarCursosById(@RequestParam int id, RedirectAttributes redirectAtribut) {
-        Usuari usuariRegistrat = (Usuari) httpSession.getAttribute("usuariRegistrat"); // Agafem l'usuari que esta registrat
+        Usuari usuariRegistrat = (Usuari) httpSession.getAttribute("usuariRegistrat"); // Agafem l'usuari que esta
+                                                                                       // registrat
         if (usuariRegistrat != null && usuariRegistrat.getIdRol() == 1) {
             activitatsRepository.eliminarById(id);
             redirectAtribut.addFlashAttribute("correcte", "Curs eliminat correctament");
@@ -279,7 +308,36 @@ public class ActivitatsController {
         return "redirect:/activitats/cursos";
     }
 
-  /* ----------------------------------------------- Podcasts ----------------------------------------------*/
+    @DeleteMapping("/cursos/dintreform")
+    public String eliminarDatesCursById(@RequestParam int idAgenda, @RequestParam int id,
+            RedirectAttributes redirectAtribut) {
+        Usuari usuariRegistrat = (Usuari) httpSession.getAttribute("usuariRegistrat"); // Agafem l'usuari que esta
+                                                                                       // registrat
+        if (usuariRegistrat != null && usuariRegistrat.getIdRol() == 1) {
+            agendaRep.eliminarById(idAgenda);
+            redirectAtribut.addFlashAttribute("correcte", "S'ha eliminat la data correctament");
+        }
+        return "redirect:/activitats/cursos?view_name=update&id=" + id;
+    }
+
+    @PostMapping("/cursos/afegirCurs")
+    public String afegirCurs(@RequestParam("datesCurs") String idAgendaSeleccionada, RedirectAttributes redirectAtribut) {
+        Usuari usuariRegistrat = (Usuari) httpSession.getAttribute("usuariRegistrat"); // Agafem l'usuari que esta
+                                                                                       // registrat
+        Participacio parti = new Participacio();
+        parti.setIdAgenda(Integer.parseInt(idAgendaSeleccionada));
+        if (usuariRegistrat != null) {
+            parti.setIdUsuari(usuariRegistrat.getIdUsuari());
+            participacioRep.guardar(parti);
+            redirectAtribut.addFlashAttribute("correcte", "T'has unit al curs correctament");
+        }
+        return "redirect:/activitats/cursos";
+    }
+
+    /*
+     * ----------------------------------------------- Podcasts
+     * ----------------------------------------------
+     */
 
     @GetMapping("/podcasts")
     public ModelAndView getHomePodcasts(@RequestParam(defaultValue = "all", required = false) String view_name,
@@ -355,81 +413,83 @@ public class ActivitatsController {
         return "redirect:/activitats/podcasts";
     }
 
+    /*
+     * ----------------------------------------------- Xerrades
+     * ----------------------------------------------
+     */
 
-/* ----------------------------------------------- Xerrades ----------------------------------------------*/
+    @GetMapping("/xerrades")
+    public ModelAndView getHomeXerrades(@RequestParam(defaultValue = "all", required = false) String view_name,
+            @RequestParam(defaultValue = "0", required = false) int id) {
 
-@GetMapping("/xerrades")
-public ModelAndView getHomeXerrades(@RequestParam(defaultValue = "all", required = false) String view_name,
-        @RequestParam(defaultValue = "0", required = false) int id) {
+        ModelAndView modelAndView = new ModelAndView("/xerrades");// Referencia al template blogs.html
 
-    ModelAndView modelAndView = new ModelAndView("/xerrades");// Referencia al template blogs.html
+        Usuari usuariRegistrat = (Usuari) httpSession.getAttribute("usuariRegistrat"); // Agafem l'usuari que esta
+                                                                                       // registrat
 
-    Usuari usuariRegistrat = (Usuari) httpSession.getAttribute("usuariRegistrat"); // Agafem l'usuari que esta
-                                                                                   // registrat
-
-    switch (view_name) {
-        case "all":
-            modelAndView.addObject("activitats", activitatsRepository.buscarAllByTipus(4)); // Busquem totes els
-                                                                                            // blogs i les
-            // mostrem
-            break;
-        case "new":
-            if (usuariRegistrat != null && usuariRegistrat.getIdRol() == 1) {
-                modelAndView.addObject("activitatnova", new Activitats()); // Posem un blog buit per poder
-                // informala i crearla
-            } else { // Si no son usuaris i intentn entrar a la força, els obliguem a anar al login
-                     // directament.
-                modelAndView = new ModelAndView("/login");
-                modelAndView.addObject("usuari", new Usuari());
-            }
-
-            break;
-        case "update": // ----- De moment nomes la busca, si cliques guardar es fa una nova.
-            if (usuariRegistrat != null && usuariRegistrat.getIdRol() == 1) {
-                Activitats activitatModificar = activitatsRepository.buscarPerId(id);
-                modelAndView.addObject("activiatatUpdate", activitatModificar); // busca els blogs per la ID per
-                                                                                // poderla actualitzar
-                activitatModificar.setDescripcio(activitatModificar.getDescripcio().replace("<br>", "\n"));
+        switch (view_name) {
+            case "all":
+                modelAndView.addObject("activitats", activitatsRepository.buscarAllByTipus(4)); // Busquem totes els
+                                                                                                // blogs i les
+                // mostrem
                 break;
-            } else {
-                modelAndView = new ModelAndView("/login");
-                modelAndView.addObject("usuari", new Usuari());
-            }
-    }
-    return modelAndView;
-}
+            case "new":
+                if (usuariRegistrat != null && usuariRegistrat.getIdRol() == 1) {
+                    modelAndView.addObject("activitatnova", new Activitats()); // Posem un blog buit per poder
+                    // informala i crearla
+                } else { // Si no son usuaris i intentn entrar a la força, els obliguem a anar al login
+                         // directament.
+                    modelAndView = new ModelAndView("/login");
+                    modelAndView.addObject("usuari", new Usuari());
+                }
 
-@PostMapping("/xerrades")
-public String newAndUpdateXerrada(@ModelAttribute Activitats activitat, RedirectAttributes redirectAtribut) {
-    Usuari usuariRegistrat = (Usuari) httpSession.getAttribute("usuariRegistrat"); // Agafem l'usuari que esta
-                                                                                   // registrat
-    if (usuariRegistrat != null && usuariRegistrat.getIdRol() == 1) {
-
-        // Canviem els enters
-        activitat.setDescripcio(activitat.getDescripcio().replace("\n", "<br>"));
-        // posem el tipus d'activitat que es
-        activitat.setTipus(4);
-
-        if (activitat.getIdActivitat() > 0) {
-            activitatsRepository.update(activitat);
-            redirectAtribut.addFlashAttribute("correcte", "Xerrada actualitzada correctament");
-        } else {
-            activitatsRepository.guardar(activitat);
-            redirectAtribut.addFlashAttribute("correcte", "Xerrada creada correctament");
+                break;
+            case "update": // ----- De moment nomes la busca, si cliques guardar es fa una nova.
+                if (usuariRegistrat != null && usuariRegistrat.getIdRol() == 1) {
+                    Activitats activitatModificar = activitatsRepository.buscarPerId(id);
+                    modelAndView.addObject("activiatatUpdate", activitatModificar); // busca els blogs per la ID per
+                                                                                    // poderla actualitzar
+                    activitatModificar.setDescripcio(activitatModificar.getDescripcio().replace("<br>", "\n"));
+                    break;
+                } else {
+                    modelAndView = new ModelAndView("/login");
+                    modelAndView.addObject("usuari", new Usuari());
+                }
         }
+        return modelAndView;
     }
-    return "redirect:/activitats/xerrades";
-}
 
-@DeleteMapping("/xerrades")
-public String eliminarXerradaById(@RequestParam int id, RedirectAttributes redirectAtribut) {
-    Usuari usuariRegistrat = (Usuari) httpSession.getAttribute("usuariRegistrat"); // Agafem l'usuari que esta
-                                                                                   // registrat
-    if (usuariRegistrat != null && usuariRegistrat.getIdRol() == 1) {
-        activitatsRepository.eliminarById(id);
-        redirectAtribut.addFlashAttribute("correcte", "Xerrada eliminada correctament");
+    @PostMapping("/xerrades")
+    public String newAndUpdateXerrada(@ModelAttribute Activitats activitat, RedirectAttributes redirectAtribut) {
+        Usuari usuariRegistrat = (Usuari) httpSession.getAttribute("usuariRegistrat"); // Agafem l'usuari que esta
+                                                                                       // registrat
+        if (usuariRegistrat != null && usuariRegistrat.getIdRol() == 1) {
+
+            // Canviem els enters
+            activitat.setDescripcio(activitat.getDescripcio().replace("\n", "<br>"));
+            // posem el tipus d'activitat que es
+            activitat.setTipus(4);
+
+            if (activitat.getIdActivitat() > 0) {
+                activitatsRepository.update(activitat);
+                redirectAtribut.addFlashAttribute("correcte", "Xerrada actualitzada correctament");
+            } else {
+                activitatsRepository.guardar(activitat);
+                redirectAtribut.addFlashAttribute("correcte", "Xerrada creada correctament");
+            }
+        }
+        return "redirect:/activitats/xerrades";
     }
-    return "redirect:/activitats/xerrades";
-}
+
+    @DeleteMapping("/xerrades")
+    public String eliminarXerradaById(@RequestParam int id, RedirectAttributes redirectAtribut) {
+        Usuari usuariRegistrat = (Usuari) httpSession.getAttribute("usuariRegistrat"); // Agafem l'usuari que esta
+                                                                                       // registrat
+        if (usuariRegistrat != null && usuariRegistrat.getIdRol() == 1) {
+            activitatsRepository.eliminarById(id);
+            redirectAtribut.addFlashAttribute("correcte", "Xerrada eliminada correctament");
+        }
+        return "redirect:/activitats/xerrades";
+    }
 
 }

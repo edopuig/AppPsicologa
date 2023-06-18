@@ -19,14 +19,14 @@
   <div th:replace="~{/components/nav.html}"></div><!-- Posem la barra de navegació -->
   <div th:replace="~{/components/subNav.html}"></div><!-- sub barra de navegació -->
   <div class="alert" th:if="${error}">
-    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
     <b th:text="${error}"></b>
-</div>
+  </div>
 
-<div class="correct" th:if="${correcte}">
-    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+  <div class="correct" th:if="${correcte}">
+    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
     <b th:text="${correcte}"></b>.
-</div>
+  </div>
   <div class="container-fluid">
 
     <div class="row">
@@ -53,26 +53,34 @@
         <main class="scroller"
           th:if="${solicitud.getParameter('view_name') == null || solicitud.getParameter('view_name') == 'all'}">
 
-          <section th:each="activitat : ${activitats}" th:id="'activitatId' + ${activitat.getIdActivitat()}" class="h-100 d-flex align-items-center">
+          <section th:each="activitat : ${activitats}" th:id="'activitatId' + ${activitat.getIdActivitat()}"
+            class="h-100 d-flex align-items-center">
             <div class="container p-3">
-                <div class="half-post-entry d-block d-lg-flex bg-light row">
-                    <div class="col-sm">
-                        <img class="p-1 img-fluid" th:src="${activitat.getImgDestacada()}">
-                    </div>
-                    <div class="contents col-sm m-5">
-                        <h3 class="p-1" th:text="${activitat.getTitolActivitat()}"></h3>
-                        <p class="p-1" th:utext="${#strings.replace(activitat.getDescripcio(), '\n', '&lt;br&gt;')}"></p>
-        
-                        <div th:each="dataAct : ${agendes}" th:if="${dataAct.getIdActivitat() == activitat.getIdActivitat()}">
-                            <ul>
-                                <li th:text="${#dates.format(dataAct.getDataActivitat(), 'dd-MM-yyyy')}"></li>
-                            </ul>
-                        </div>
-                    </div>
+              <div class="half-post-entry d-block d-lg-flex bg-light row">
+                <div class="col-sm">
+                  <img class="p-1 img-fluid" th:src="${activitat.getImgDestacada()}">
                 </div>
+                <div class="contents col-sm m-5">
+                  <h3 class="p-1" th:text="${activitat.getTitolActivitat()}"></h3>
+                  <p class="p-1" th:utext="${#strings.replace(activitat.getDescripcio(), '\n', '&lt;br&gt;')}"></p>
+
+                  <form style="margin:0px" th:action="@{/activitats/cursos/afegirCurs}" th:method="post">
+                    <label for="datesCurs">Tira una data i uneix-te al curs:</label>
+                    <select id="datesCurs" name="datesCurs">
+                      <div th:each="agenda : ${agendes}"
+                        th:if="${agenda.getIdActivitat() == activitat.getIdActivitat()}">
+                        <option th:value="${agenda.getIdAgenda()}"
+                          th:text="${#dates.format(agenda.getDataActivitat(), 'dd-MM-yyyy')}"></option>
+                      </div>
+
+                    </select>
+                    <input type="submit" value="Uneix-te">
+                  </form>
+                </div>
+              </div>
             </div>
-            
-            
+
+
             <!-- BOTONS ADMIN -->
             <div class="row" th:if="${usuariRegistrat != null and usuariRegistrat.getIdRol == 1}">
               <div class="col-sm-4">
@@ -139,54 +147,79 @@
 
 
         <!-- Si el parametre es "update" la pagina mostrara aquest codi, que serveix per actualitzar el curs seleccionat-->
-        <article th:if="${solicitud.getParameter('view_name') == 'update'}" class="col-sm-7">
-          <form th:action="@{/activitats/cursos}" th:method="post" th:object="${activiatatUpdate}">
-            <input type="hidden" th:field="*{idActivitat}">
+        <article th:if="${solicitud.getParameter('view_name') == 'update'}" class="row">
+          <div class="col-sm-7">
+            <form th:action="@{/activitats/cursos}" th:method="post" th:object="${activiatatUpdate}">
+              <input type="hidden" th:field="*{idActivitat}">
 
-            <div class="form-group">
-              <label for="inputTitol">Titol del curs</label>
-              <input class="form-control" type="text" th:value="*{titolActivitat}" id="inputTitol"
-                th:field="*{titolActivitat}" name="titolActivitat">
-            </div>
+              <div class="form-group">
+                <label for="inputTitol">Titol del curs</label>
+                <input class="form-control" type="text" th:value="*{titolActivitat}" id="inputTitol"
+                  th:field="*{titolActivitat}" name="titolActivitat">
+              </div>
 
-            <div class="form-group">
-              <label for="imgDestacada">URL Imatge</label>
-              <input class="form-control" type="text" th:value="*{imgDestacada}" id="imgDestacada"
-                th:field="*{imgDestacada}" name="imgDestacada">
-            </div>
+              <div class="form-group">
+                <label for="imgDestacada">URL Imatge</label>
+                <input class="form-control" type="text" th:value="*{imgDestacada}" id="imgDestacada"
+                  th:field="*{imgDestacada}" name="imgDestacada">
+              </div>
 
-            <div class="form-group">
-              <label for="descripcio">Escriu la teva consulta</label>
-              <textarea class="form-control" type="text" rows="12" th:value="*{descripcio}" id="descripcio"
-                th:field="*{descripcio}" name="descripcio"></textarea>
-            </div>
+              <div class="form-group">
+                <label for="descripcio">Escriu la teva consulta</label>
+                <textarea class="form-control" type="text" rows="12" th:value="*{descripcio}" id="descripcio"
+                  th:field="*{descripcio}" name="descripcio"></textarea>
+              </div>
 
-            <div class="form-group">
-              <label for="activitatDestacada">Vols que sigui el blog destacat?</label>
-              <select id="option" name="option" th:field="*{activitatDestacada}">
-                <option value="0">No</option>
-                <option value="1">Si</option>
-              </select>
-            </div>
+              <div class="form-group">
+                <label for="activitatDestacada">Vols que sigui el blog destacat?</label>
+                <select id="option" name="option" th:field="*{activitatDestacada}">
+                  <option value="0">No</option>
+                  <option value="1">Si</option>
+                </select>
+              </div>
 
-            <div class="form-group">
-              <div id="dataContainer">
+              <div class="form-group">
+                <div id="dataContainer">
+                </div>
+                <button type="button" onclick="agregarCampData()">Agregar Data Curs</button>
+              </div>
+              <div class="form-group">
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                <button type="reset" class="btn btn-primary">Buidar</button>
+              </div>
+            </form>
 
-                <div th:each="dataAct : ${agendesUpdate}" th:if="${dataAct.getIdActivitat() == activiatatUpdate.getIdActivitat()}">
-                  <div>
-                    <label for="data0">Data Curs:</label>
-                    <input type="date" id="data0" th:value="${#dates.format(dataAct.getDataActivitat(), 'yyyy-MM-dd')}" name="data-0-" readonly="readonly">
+
+            <form th:action="@{/activitats/cursos/dintreform}" th:method="delete" th:object="${activiatatUpdate}">
+              <input type="hidden" th:field="*{idActivitat}">
+              <div class="form-group">
+                <div id="dataContainer">
+
+                  <div th:each="dataAct : ${agendesUpdate}"
+                    th:if="${dataAct.getIdActivitat() == activiatatUpdate.getIdActivitat()}">
+                    <div>
+                      <label for="data0">Data Curs:</label>
+                      <input type="data0" id="data"
+                        th:value="${#dates.format(dataAct.getDataActivitat(), 'yyyy-MM-dd')}" name="data-0-"
+                        readonly="readonly">
+                      <input type="hidden" name="idAgenda" th:value="${dataAct.getIdAgenda()}">
+                      <input type="hidden" name="id" th:value="${activiatatUpdate.getIdActivitat()}">
+                      <button type="submit" class="btn btn-danger"> Eliminar </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <button type="button" onclick="agregarCampData()">Agregar Data Curs</button>
-            </div>
 
-            <div class="form-group">
-              <button type="submit" class="btn btn-primary">Guardar</button>
-              <button type="reset" class="btn btn-primary">Buidar</button>
+              </div>
+            </form>
+          </div>
+          <div class="col-sm-4">
+            Persones que s'han unit al curs
+            <div th:each="persones : ${participants}">
+                <ul>
+                    <li th:text="${persones.getNomUsuari()} + ' ' + ${persones.getCognomUsuari()}"></li>
+                </ul>
             </div>
-          </form>
+          </div>
         </article>
 
       </div>

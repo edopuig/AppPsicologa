@@ -42,12 +42,12 @@
                             <h4 class="text-right">Perfil</h4>
                         </div>
 
-                        <form th:action="@{/profile}" th:method="post" th:object="${usuariRegistrat}">
+                        <form th:action="@{/profile}" th:method="post" th:object="${usuariRegistrat}" onsubmit ="return validateForm()" name="perfilForm">
                             <input type="hidden" th:field="*{idUsuari}">
                             <div class="row mt-2">
                                 <div class=" col-md-6">
                                     <label class="form-label" for="nomUsuari">Nom</label>
-                                    <input type="text" id="nomUsuari" class="form-control form-control-lg" th:value="${usuariRegistrat.getNomUsuari()}" th:field="*{nomUsuari}" name="nomUsuari" />
+                                    <input type="text" id="nomUsuari" class="form-control form-control-lg" th:value="${usuariRegistrat.getNomUsuari()}" th:field="*{nomUsuari}" name="nomUsuari" required/>
                                 </div>
 
                                 <div class=" col-md-6">
@@ -59,32 +59,24 @@
                             <div class="row mt-2">
                                 <div class=" col-md-6">
                                     <label class="form-label" for="Email">El teu Email</label>
-                                    <input type="email" id="Email" class="form-control form-control-lg" th:value="${usuariRegistrat.getCorreuUsuari()}" th:field="*{correuUsuari}" name="correuUsuari" />
+                                    <input type="email" id="Email" class="form-control form-control-lg" th:value="${usuariRegistrat.getCorreuUsuari()}" th:field="*{correuUsuari}" name="correuUsuari" required/>
                                 </div>
 
                                 <div class=" col-md-6">
                                     <label class="form-label" for="Contrasenya">Contrasenya</label>
-                                    <input type="text" id="Contrasenya" class="form-control form-control-lg" th:value="${usuariRegistrat.getContrasenyaUsuari()}" th:field="*{contrasenyaUsuari}" name="contrasenyaUsuari" />
+                                    <input type="text" id="Contrasenya" class="form-control form-control-lg" th:value="${usuariRegistrat.getContrasenyaUsuari()}" th:field="*{contrasenyaUsuari}" name="contrasenyaUsuari" required/>
                                 </div>
                             </div>
 
                             <div class="row mt-2">
                                 <div class=" col-md-6">
                                     <label class="form-label" for="telefonUsuari">Telefon</label>
-                                    <input type="number" id="telefonUsuari" class="form-control form-control-lg" th:value="${usuariRegistrat.getTelefonUsuari()}" th:field="*{telefonUsuari}" name="telefonUsuari" />
+                                    <input type="tel" id="telefonUsuari" class="form-control form-control-lg" th:value="${usuariRegistrat.getTelefonUsuari()}" th:field="*{telefonUsuari}" name="telefonUsuari" pattern="[0-9]{9}"/>
                                 </div>
-                            </div>
-
-                            <div class="row mt-2">
-                                <div class="form-check col-md-6">
-                                    <label class="form-check-label">
-                                      <input class="form-check-input" type="checkbox" th:value="${usuariRegistrat.getNewsletter()}" th:field="*{newsletter}" name="newsletter"> Acepto rebre correus electronics
-                                    </label>
-                                  </div>
                             </div>
                             <button class="btn btn-primary profile-button" type="submit">Save Profile</button>
                         </form>
-
+                        <p class = "errorMessage top-arrow" > </p>
                         <div class="mt-5 text-center">
                             
                             <a th:href="@{/profile?view_name=logout}" class="btn btn-primary active"> Log out</a>
