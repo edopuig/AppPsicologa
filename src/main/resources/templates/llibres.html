@@ -18,6 +18,15 @@
 <body>
   <div th:replace="~{/components/nav.html}"></div><!-- Posem la barra de navegació -->
   <div th:replace="~{/components/subNav.html}"></div><!-- sub barra de navegació -->
+  <div class="alert" th:if="${error}">
+    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+    <b th:text="${error}"></b>
+</div>
+
+<div class="correct" th:if="${correcte}">
+    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+    <b th:text="${correcte}"></b>.
+</div>
   <div class="container-fluid">
 
     <div class="row">

@@ -18,6 +18,17 @@
 
   <main class="vh-80 bg-image"
     style="background-image: url('https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp');">
+
+    <div class="alert" th:if="${error}">
+      <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+      <b th:text="${error}"></b>
+    </div>
+
+    <div class="correct" th:if="${correcte}">
+      <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+      <b th:text="${correcte}"></b>.
+    </div>
+
     <div class="mask d-flex align-items-center h-100 gradient-custom-3">
       <div class="container h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
@@ -31,15 +42,18 @@
 
                   <div class="mb-3 mt-3">
                     <label for="nom">Nom:</label>
-                    <input type="text" class="form-control" id="nom" th:value="*{nom}" th:field="*{nom}" placeholder="Escriu el teu nom" name="nom">
+                    <input type="text" class="form-control" id="nom" th:value="*{nom}" th:field="*{nom}"
+                      placeholder="Escriu el teu nom" name="nom">
                   </div>
                   <div class="mb-3 mt-3">
                     <label for="email">Email:</label>
-                    <input type="email" class="form-control" id="email" th:value="*{correu}" th:field="*{correu}" placeholder="Enter email" name="email">
+                    <input type="email" class="form-control" id="email" th:value="*{correu}" th:field="*{correu}"
+                      placeholder="Enter email" name="email">
                   </div>
                   <div class="md-form">
                     <label for="consulta">Escriu la teva consulta</label>
-                    <textarea class="form-control" id="consulta" rows="3" th:value="*{consulta}" th:field="*{consulta}"></textarea>
+                    <textarea class="form-control" id="consulta" rows="3" th:value="*{consulta}"
+                      th:field="*{consulta}"></textarea>
                   </div>
                   <div class="form-check mb-3">
                     <label class="form-check-label">

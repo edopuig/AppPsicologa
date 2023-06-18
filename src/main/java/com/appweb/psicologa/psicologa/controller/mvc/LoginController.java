@@ -41,9 +41,10 @@ public class LoginController {
            usuari = usuariRepository.login(usuari.getCorreuUsuari(), usuari.getContrasenyaUsuari()); //guardem el nou usuari a la bbdd
            if(usuari != null){
                 httpSession.setAttribute("usuariRegistrat", usuari); //com que entra dintre la aplicacio, guardem l'usuari dintre la sessio per recordarlo mentres estigui dintre
+                 redirectAtribut.addFlashAttribute("correcte", "Benvingut");
                 return "redirect:/profile";
            } else{
-            redirectAtribut.addFlashAttribute("id", null).addFlashAttribute("error", "No s'ha trobat cap usuari amb aquestes credencials");
+            redirectAtribut.addFlashAttribute("error", "No s'ha trobat cap usuari amb aquestes credencials");
            }
            
         }

@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.appweb.psicologa.psicologa.model.Usuari;
 import com.appweb.psicologa.psicologa.repository.UsuariRep;
 
@@ -31,9 +33,16 @@ public class RegistreController {
 
 
     @PostMapping
-    public String newAndUpdate(@ModelAttribute Usuari usuari){//Quan es clica el boto de registrar, entra en aquesta funcio
-            usuariRepository.guardar(usuari); //guardem el nou usuari a la bbdd
-            httpSession.setAttribute("usuariRegistrat", usuari); //com que entra dintre la aplicacio, guardem l'usuari dintre la sessio per recordarlo mentres estigui dintre
-        return "redirect:/";
+    public String newAndUpdate(@ModelAttribute Usuari usuari, RedirectAttributes redirectAtribut){//Quan es clica el boto de registrar, entra en aquesta funcio
+            boolean guardat = usuariRepository.guardar(usuari); //guardem el nou usuari a la bbdd
+            if(guardat){
+                httpSession.setAttribute("usuariRegistrat", usuari); //com que entra dintre la aplicacio, guardem l'usuari dintre la sessio per recordarlo mentres estigui dintre
+                redirectAtribut.addFlashAttribute("correcte", "Benvingut, per tenir un perfil complet, omple tota la informació restant");
+                return "redirect:/profile";
+            } else{
+                redirectAtribut.addFlashAttribute("error", "Ja hi ha un usuari amb aquest correu");
+                return "redirect:/registre";
+            }
+           
     }
 }

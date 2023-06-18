@@ -9,10 +9,6 @@
 
 }
 
-  /* Oculta la barra de scroll */
-  ::-webkit-scrollbar {
-    display: none;
-  }
 
   body {
     scrollbar-width: none;
@@ -93,7 +89,6 @@
   padding: 0px;
 }
 
-
  /* Estilos para pantallas grandes */
 @media screen and (min-width: 768px) {
   .terapiaClass {
@@ -113,4 +108,31 @@
   .dropdown:hover .dropdown-menu {
     display: block;
   }
+}
+
+.alert {
+  padding: 20px;
+  background-color: #f44336;
+  color: white;
+}
+
+.correct {
+  padding: 20px;
+  background-color: #269c36;
+  color: white;
+}
+
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.closebtn:hover {
+  color: black;
 }

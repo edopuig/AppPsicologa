@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.appweb.psicologa.psicologa.model.Activitats;
 import com.appweb.psicologa.psicologa.model.Agenda;
@@ -122,7 +123,7 @@ public class ActivitatsController {
     }
 
     @PostMapping("/blogs")
-    public String newAndUpdateBlogs(@ModelAttribute Activitats activitat) {
+    public String newAndUpdateBlogs(@ModelAttribute Activitats activitat, RedirectAttributes redirectAtribut) {
         Usuari usuariRegistrat = (Usuari) httpSession.getAttribute("usuariRegistrat"); // Agafem l'usuari que esta
                                                                                        // registrat
         if (usuariRegistrat != null && usuariRegistrat.getIdRol() == 1) {
@@ -134,19 +135,24 @@ public class ActivitatsController {
 
             if (activitat.getIdActivitat() > 0) {
                 activitatsRepository.update(activitat);
+                redirectAtribut.addFlashAttribute("correcte", "Blog actualitzat correctament");
             } else {
                 activitatsRepository.guardar(activitat);
+                redirectAtribut.addFlashAttribute("correcte", "Blog creat correctament");
             }
+        } else{
+             redirectAtribut.addFlashAttribute("error", "Hi ha hagut algun problema");
         }
         return "redirect:/activitats/blogs";
     }
 
     @DeleteMapping("/blogs")
-    public String eliminarBlogsById(@RequestParam int id) {
+    public String eliminarBlogsById(@RequestParam int id, RedirectAttributes redirectAtribut) {
         Usuari usuariRegistrat = (Usuari) httpSession.getAttribute("usuariRegistrat"); // Agafem l'usuari que esta
                                                                                        // registrat
         if (usuariRegistrat != null && usuariRegistrat.getIdRol() == 1) {
             activitatsRepository.eliminarById(id);
+            redirectAtribut.addFlashAttribute("correcte", "Blog eliminat correctament");
         }
         return "redirect:/activitats/blogs";
     }
@@ -212,7 +218,7 @@ public class ActivitatsController {
     }
 
     @PostMapping("/cursos")
-    public String newAndUpdateCursos(@ModelAttribute Activitats activitat, HttpServletRequest request) {
+    public String newAndUpdateCursos(@ModelAttribute Activitats activitat, HttpServletRequest request, RedirectAttributes redirectAtribut) {
         Usuari usuariRegistrat = (Usuari) httpSession.getAttribute("usuariRegistrat"); // Agafem l'usuari que esta registrat
 
         Enumeration<String> parameterNames = request.getParameterNames();
@@ -249,12 +255,14 @@ public class ActivitatsController {
             if (activitat.getIdActivitat() > 0) {
                 activitatsRepository.update(activitat);
                 agendaRep.guardarByIdActivitatData(datas,activitat.getIdActivitat());
+                redirectAtribut.addFlashAttribute("correcte", "Curs actualitzat correctament");
 
             } else {
                 activitatsRepository.guardar(activitat); //Guardem l'activitat perq generi el seu ID
                 activitat = activitatsRepository.buscarUltimaCreada(); //Recuparem l'activitat que s'acava de crear
                 if(activitat != null){
                     agendaRep.guardarByIdActivitatData(datas,activitat.getIdActivitat());
+                    redirectAtribut.addFlashAttribute("correcte", "Curs creat correctament");
                 }
             }
         }
@@ -262,10 +270,11 @@ public class ActivitatsController {
     }
 
     @DeleteMapping("/cursos")
-    public String eliminarCursosById(@RequestParam int id) {
+    public String eliminarCursosById(@RequestParam int id, RedirectAttributes redirectAtribut) {
         Usuari usuariRegistrat = (Usuari) httpSession.getAttribute("usuariRegistrat"); // Agafem l'usuari que esta registrat
         if (usuariRegistrat != null && usuariRegistrat.getIdRol() == 1) {
             activitatsRepository.eliminarById(id);
+            redirectAtribut.addFlashAttribute("correcte", "Curs eliminat correctament");
         }
         return "redirect:/activitats/cursos";
     }
@@ -314,7 +323,7 @@ public class ActivitatsController {
     }
 
     @PostMapping("/podcasts")
-    public String newAndUpdatePodcasts(@ModelAttribute Activitats activitat) {
+    public String newAndUpdatePodcasts(@ModelAttribute Activitats activitat, RedirectAttributes redirectAtribut) {
         Usuari usuariRegistrat = (Usuari) httpSession.getAttribute("usuariRegistrat"); // Agafem l'usuari que esta
                                                                                        // registrat
         if (usuariRegistrat != null && usuariRegistrat.getIdRol() == 1) {
@@ -326,19 +335,22 @@ public class ActivitatsController {
 
             if (activitat.getIdActivitat() > 0) {
                 activitatsRepository.update(activitat);
+                redirectAtribut.addFlashAttribute("correcte", "Podcast actualitzat correctament");
             } else {
                 activitatsRepository.guardar(activitat);
+                redirectAtribut.addFlashAttribute("correcte", "Pòdcast creat correctament");
             }
         }
         return "redirect:/activitats/podcasts";
     }
 
     @DeleteMapping("/podcasts")
-    public String eliminarPodcastsById(@RequestParam int id) {
+    public String eliminarPodcastsById(@RequestParam int id, RedirectAttributes redirectAtribut) {
         Usuari usuariRegistrat = (Usuari) httpSession.getAttribute("usuariRegistrat"); // Agafem l'usuari que esta
                                                                                        // registrat
         if (usuariRegistrat != null && usuariRegistrat.getIdRol() == 1) {
             activitatsRepository.eliminarById(id);
+            redirectAtribut.addFlashAttribute("correcte", "Pòdcast eliminat correctament");
         }
         return "redirect:/activitats/podcasts";
     }
@@ -388,7 +400,7 @@ public ModelAndView getHomeXerrades(@RequestParam(defaultValue = "all", required
 }
 
 @PostMapping("/xerrades")
-public String newAndUpdateXerrada(@ModelAttribute Activitats activitat) {
+public String newAndUpdateXerrada(@ModelAttribute Activitats activitat, RedirectAttributes redirectAtribut) {
     Usuari usuariRegistrat = (Usuari) httpSession.getAttribute("usuariRegistrat"); // Agafem l'usuari que esta
                                                                                    // registrat
     if (usuariRegistrat != null && usuariRegistrat.getIdRol() == 1) {
@@ -400,19 +412,22 @@ public String newAndUpdateXerrada(@ModelAttribute Activitats activitat) {
 
         if (activitat.getIdActivitat() > 0) {
             activitatsRepository.update(activitat);
+            redirectAtribut.addFlashAttribute("correcte", "Xerrada actualitzada correctament");
         } else {
             activitatsRepository.guardar(activitat);
+            redirectAtribut.addFlashAttribute("correcte", "Xerrada creada correctament");
         }
     }
     return "redirect:/activitats/xerrades";
 }
 
 @DeleteMapping("/xerrades")
-public String eliminarXerradaById(@RequestParam int id) {
+public String eliminarXerradaById(@RequestParam int id, RedirectAttributes redirectAtribut) {
     Usuari usuariRegistrat = (Usuari) httpSession.getAttribute("usuariRegistrat"); // Agafem l'usuari que esta
                                                                                    // registrat
     if (usuariRegistrat != null && usuariRegistrat.getIdRol() == 1) {
         activitatsRepository.eliminarById(id);
+        redirectAtribut.addFlashAttribute("correcte", "Xerrada eliminada correctament");
     }
     return "redirect:/activitats/xerrades";
 }

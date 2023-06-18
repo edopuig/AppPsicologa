@@ -15,8 +15,16 @@
 
 <body>
     <div th:replace="~{/components/nav.html}"></div>
+    <div class="alert" th:if="${error}">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+        <b th:text="${error}"></b>
+    </div>
 
-    <section class="vh-100 bg-image" th:if="${solicitud.getParameter('nom_entrada') == 'register'}"
+    <div class="correct" th:if="${correcte}">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+        <b th:text="${correcte}"></b>.
+    </div>
+    <section class="vh-100 bg-image"
     style="background-image: url('https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp');">
         <div class="mask d-flex align-items-center h-100 gradient-custom-3">
             <div class="container h-100">
@@ -54,7 +62,7 @@
                                         <button type="submit" class="btn btn-primary">Registrat</button>
                                     </div>
 
-                                    <p class="text-center text-muted mt-5 mb-0">Ja tens un compte? <a th:href="@{/registre(nom_entrada='login')}"
+                                    <p class="text-center text-muted mt-5 mb-0">Ja tens un compte? <a th:href="@{/login}"
                                         class="fw-bold text-body"><u>Entra aquí</u></a></p>
 
                                 </form>
@@ -66,47 +74,6 @@
             </div>
         </div>
     </section>
-
-    <section class="vh-100 bg-image" th:if="${solicitud.getParameter('nom_entrada') == null || solicitud.getParameter('nom_entrada') == 'login'}"
-    style="background-image: url('https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp');">
-        <div class="mask d-flex align-items-center h-100 gradient-custom-3">
-            <div class="container h-100">
-                <div class="row d-flex justify-content-center align-items-center h-100">
-                    <div class="col-12 col-md-9 col-lg-7 col-xl-6">
-                        <div class="card" style="border-radius: 15px;">
-                            <div class="card-body p-5">
-                                <h2 class="text-uppercase text-center mb-5">Entra</h2>
-
-                                <form th:action="@{/registre}" th:method="post" th:object="${usuari}">
-                                    <input type="hidden" th:field="*{idUsuari}">
-
-                                    <div class="form-outline mb-4">
-                                        <input type="email" id="Email" class="form-control form-control-lg" th:value="*{correuUsuari}" th:field="*{correuUsuari}" name="correuUsuari"/>
-                                        <label class="form-label" for="Email">El teu Email</label>
-                                    </div>
-
-                                    <div class="form-outline mb-4">
-                                        <input type="password" id="Contrasenya" class="form-control form-control-lg" th:value="*{contrasenyaUsuari}" th:field="*{contrasenyaUsuari}" name="contrasenyaUsuari"/>
-                                        <label class="form-label" for="Contrasenya">Contrasenya</label>
-                                    </div>
-
-                                    <div class="d-flex justify-content-center">
-                                        <button type="submit" class="btn btn-primary">Entra</button>
-                                    </div>
-
-                                    <p class="text-center text-muted mt-5 mb-0">Encara no tens un compte? <a  th:href="@{/registre(nom_entrada='register')}"
-                                        class="fw-bold text-body"><u>Registrat clicant aqui!</u></a></p>
-
-                                </form>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <div th:replace="~{/components/footer.html}"></div>
 </body>
 
