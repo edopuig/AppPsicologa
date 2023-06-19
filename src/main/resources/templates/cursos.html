@@ -64,7 +64,7 @@
                   <h3 class="p-1" th:text="${activitat.getTitolActivitat()}"></h3>
                   <p class="p-1" th:utext="${#strings.replace(activitat.getDescripcio(), '\n', '&lt;br&gt;')}"></p>
 
-                  <form style="margin:0px" th:action="@{/activitats/cursos/afegirCurs}" th:method="post">
+                  <form style="margin:0px" th:action="@{/activitats/cursos/afegirCurs}" th:method="post" th:if="${usuariRegistrat != null}">
                     <label for="datesCurs">Tira una data i uneix-te al curs:</label>
                     <select id="datesCurs" name="datesCurs">
                       <div th:each="agenda : ${agendes}"
@@ -72,7 +72,6 @@
                         <option th:value="${agenda.getIdAgenda()}"
                           th:text="${#dates.format(agenda.getDataActivitat(), 'dd-MM-yyyy')}"></option>
                       </div>
-
                     </select>
                     <input type="submit" value="Uneix-te">
                   </form>
