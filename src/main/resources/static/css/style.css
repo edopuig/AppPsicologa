@@ -70,7 +70,7 @@
 }
 
 #menuLateral #menu-item .item a:hover{
-  background-color: rgb(238, 255, 0);
+  background-color: blue;
 }
 
 
@@ -155,4 +155,9 @@
 ::-webkit-scrollbar-horizontal {
   width: 0em;
   background-color: #F5F5F5;
+}
+
+.linkFooter{
+  text-decoration: none;
+  color: black;
 }

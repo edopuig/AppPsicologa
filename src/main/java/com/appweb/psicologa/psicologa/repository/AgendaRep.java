@@ -15,7 +15,7 @@ import com.appweb.psicologa.psicologa.model.Agenda;
 import jakarta.annotation.PostConstruct;
 
 @Repository
-public class AgendaRep implements InterfacreGeneral<Agenda>{
+public class AgendaRep implements InterfacreGeneral<Agenda> {
     @Autowired
     private DataSource dataSource;
     private JdbcTemplate jdbcTemplate;
@@ -24,7 +24,6 @@ public class AgendaRep implements InterfacreGeneral<Agenda>{
     public void PostConstruct() {
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
-
 
     @Override
     public List<Agenda> buscarAll() {
@@ -40,7 +39,7 @@ public class AgendaRep implements InterfacreGeneral<Agenda>{
     public boolean guardar(Agenda agenda) {
         try {
             String sql = "insert into agendactivitat(DataActivitat,IdActivitat) values(?,?)";
-                jdbcTemplate.update(sql, agenda.getDataActivitat(), agenda.getIdActivitat());
+            jdbcTemplate.update(sql, agenda.getDataActivitat(), agenda.getIdActivitat());
             return true;
         } catch (Exception e) {
             System.err.println(e);
@@ -63,9 +62,8 @@ public class AgendaRep implements InterfacreGeneral<Agenda>{
             }
         }
         return false;
-    }  
-    
-    
+    }
+
     public boolean eliminarById(int id) {
         try {
             String sql = String.format(
@@ -78,12 +76,11 @@ public class AgendaRep implements InterfacreGeneral<Agenda>{
         }
     }
 
-
     public boolean guardarByIdActivitatData(List<Date> dataActivitat, int idActivitat) {
         try {
-             Calendar dia = Calendar.getInstance();
-            for(Date data : dataActivitat){
-                dia.setTime(data); 
+            Calendar dia = Calendar.getInstance();
+            for (Date data : dataActivitat) {
+                dia.setTime(data);
                 dia.add(Calendar.DATE, 1);
                 data = dia.getTime();
                 String sql = "insert into agendactivitat(DataActivitat,IdActivitat) values(?,?)";
@@ -98,7 +95,7 @@ public class AgendaRep implements InterfacreGeneral<Agenda>{
 
     public boolean updateByIdActivitatData(List<Date> dataActivitat, int idActivitat) {
         try {
-            for(Date data : dataActivitat){
+            for (Date data : dataActivitat) {
                 String sql = "UPDATE agendactivitat SET DataActivitat = ? WHERE IdActivitat = ?";
                 jdbcTemplate.update(sql, data, idActivitat);
             }
@@ -113,5 +110,8 @@ public class AgendaRep implements InterfacreGeneral<Agenda>{
         return jdbcTemplate.query("SELECT * From agendactivitat where IdActivitat=?", new AgendaMapper(), idActivitat);
     }
 
+    public List<Agenda> buscarPerIdAgendas(int idAgenda) {
+        return jdbcTemplate.query("SELECT * From agendactivitat where IdAgenda=?", new AgendaMapper(), idAgenda);
+    }
 
 }

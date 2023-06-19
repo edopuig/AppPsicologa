@@ -33,11 +33,15 @@ public class ParticipacioRep implements InterfacreGeneral<Participacio> {
     @Override
     public Participacio buscarPerId(int id) {
         return jdbcTemplate.queryForObject("SELECT * From participacio where IdParticipacio=?",
-        new ParticipacioMapper(), id);
+                new ParticipacioMapper(), id);
     }
 
     public List<Participacio> buscarPerIdAgenda(int id) {
         return jdbcTemplate.query("SELECT * From participacio where idAgenda=?", new ParticipacioMapper(), id);
+    }
+
+    public List<Participacio> buscarPerIdUsuari(int id) {
+        return jdbcTemplate.query("SELECT * From participacio where idUsuari=?", new ParticipacioMapper(), id);
     }
 
     @Override
@@ -74,6 +78,18 @@ public class ParticipacioRep implements InterfacreGeneral<Participacio> {
             String sql = String.format(
                     "delete from participacio where IdParticipacio='%d'", id);
             jdbcTemplate.execute(sql);
+            return true;
+        } catch (Exception e) {
+            System.err.println(e);
+            return false;
+        }
+    }
+
+    public boolean eliminarByIdAgendaIdUsuari(int idAgenda, int idUsuari) {
+        try {
+            String sql = String.format(
+                    "delete from participacio where IdAgenda='%d' AND IdUsuari='%d'", idAgenda,idUsuari);
+            jdbcTemplate.update(sql);
             return true;
         } catch (Exception e) {
             System.err.println(e);

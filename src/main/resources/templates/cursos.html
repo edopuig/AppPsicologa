@@ -200,7 +200,7 @@
                     <div>
                       <label for="data0">Data Curs:</label>
                       <input type="data0" id="data"
-                        th:value="${#dates.format(dataAct.getDataActivitat(), 'yyyy-MM-dd')}" name="data-0-"
+                        th:value="${#dates.format(dataAct.getDataActivitat(), 'dd-MM-yyyy')}" name="data-0-"
                         readonly="readonly">
                       <input type="hidden" name="idAgenda" th:value="${dataAct.getIdAgenda()}">
                       <input type="hidden" name="id" th:value="${activiatatUpdate.getIdActivitat()}">
@@ -208,17 +208,29 @@
                     </div>
                   </div>
                 </div>
-
               </div>
             </form>
           </div>
           <div class="col-sm-4">
             Persones que s'han unit al curs
-            <div th:each="persones : ${participants}">
-                <ul>
-                    <li th:text="${persones.getNomUsuari()} + ' ' + ${persones.getCognomUsuari()}"></li>
-                </ul>
+            <div th:each="diesAgenda : ${agendesUpdate}">
+              <p th:text="${#dates.format(diesAgenda.getDataActivitat(), 'dd-MM-yyyy')}"></p>
+              <div th:each="participacio : ${participants}">
+                <div th:if="${diesAgenda.getIdAgenda() == participacio.getIdAgenda()}">
+                  <div th:each="usuariApuntat : ${usuarisApuntatsCurs}">
+                    <ul th:if="${participacio.getIdUsuari() == usuariApuntat.getIdUsuari()}">
+                      <li th:text="${usuariApuntat.getNomUsuari()} + ' ' + ${usuariApuntat.getCognomUsuari()}"></li>
+                    </ul>
+                  </div>
+                  
+                </div>
+
+              </div>
+
             </div>
+
+
+
           </div>
         </article>
 

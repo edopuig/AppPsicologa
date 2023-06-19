@@ -216,24 +216,25 @@ public class ActivitatsController {
                 if (usuariRegistrat != null && usuariRegistrat.getIdRol() == 1) {
 
                     List<Usuari> usuarisApuntatsCurs = new ArrayList<>();
+                    List<Participacio> partisipacionsList = new ArrayList<>();
 
                     Activitats activitatModificar = activitatsRepository.buscarPerId(id);
-                    modelAndView.addObject("activiatatUpdate", activitatModificar); // busca els blogs per la ID per
-                                                                                    // poderla actualitzar
+                    modelAndView.addObject("activiatatUpdate", activitatModificar); // busca els blogs per la ID per poderla actualitzar
                     activitatModificar.setDescripcio(activitatModificar.getDescripcio().replace("<br>", "\n"));
 
-                   
                     //Busquem les agendes que te l'activitat que estem modificant.
                     List<Agenda> datesUpdate = agendaRep.buscarPerIdActivitat(activitatModificar.getIdActivitat());                    
 
-                    for(Agenda agenda : datesUpdate){//Per cada agenda, hem de mirar cuants usuaris s'han unit
-                        List<Participacio> patisipacionsList = participacioRep.buscarPerIdAgenda(agenda.getIdAgenda());
-                        for(Participacio parti : patisipacionsList){
+                    for(Agenda agenda : datesUpdate){//Per cada agenda, hem de mirar quants usuaris s'han unit
+                       List<Participacio> auxPartisipacionsList = participacioRep.buscarPerIdAgenda(agenda.getIdAgenda());
+                        for(Participacio parti : auxPartisipacionsList){
+                            partisipacionsList.add(parti);
                             usuarisApuntatsCurs.add(usuariRep.getUsuariById(parti.getIdUsuari()));
                         }
                     }
                     modelAndView.addObject("agendesUpdate", datesUpdate);
-                     modelAndView.addObject("participants", usuarisApuntatsCurs);
+                    modelAndView.addObject("participants", partisipacionsList);
+                    modelAndView.addObject("usuarisApuntatsCurs", usuarisApuntatsCurs);
                     break;
                 } else {
                     modelAndView = new ModelAndView("/login");

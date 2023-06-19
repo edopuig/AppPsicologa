@@ -17,23 +17,24 @@
 <body>
     <div th:replace="~{/components/nav.html}"></div>
     <div class="alert" th:if="${error}">
-        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
         <b th:text="${error}"></b>
     </div>
 
     <div class="correct" th:if="${correcte}">
-        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
         <b th:text="${correcte}"></b>.
     </div>
-    <main class="vh-80 bg-image" style="background-image: url('https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp');">
+    <main class="vh-80 bg-image"
+        style="background-image: url('https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp');">
         <div class="container rounded bg-white mt-5 mb-5">
             <div class="row">
                 <div class="col-md-4 border-right">
                     <div class="d-flex flex-column align-items-center text-center p-3 py-5">
                         <img class="rounded-circle mt-5" width="150px"
                             src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
-                            <span class="font-weight-bold" th:text="${usuariRegistrat.getNomUsuari()}">Nom</span>
-                            <span class="text-black-50" th:text="${usuariRegistrat.getCorreuUsuari()}">Correu</span>
+                        <span class="font-weight-bold" th:text="${usuariRegistrat.getNomUsuari()}">Nom</span>
+                        <span class="text-black-50" th:text="${usuariRegistrat.getCorreuUsuari()}">Correu</span>
                     </div>
                 </div>
                 <div class="col-md-8 border-right">
@@ -42,45 +43,71 @@
                             <h4 class="text-right">Perfil</h4>
                         </div>
 
-                        <form th:action="@{/profile}" th:method="post" th:object="${usuariRegistrat}" onsubmit ="return validateForm()" name="perfilForm">
+                        <form th:action="@{/profile}" th:method="post" th:object="${usuariRegistrat}" name="perfilForm">
                             <input type="hidden" th:field="*{idUsuari}">
                             <div class="row mt-2">
                                 <div class=" col-md-6">
                                     <label class="form-label" for="nomUsuari">Nom</label>
-                                    <input type="text" id="nomUsuari" class="form-control form-control-lg" th:value="${usuariRegistrat.getNomUsuari()}" th:field="*{nomUsuari}" name="nomUsuari" required/>
+                                    <input type="text" id="nomUsuari" class="form-control form-control-lg"
+                                        th:value="${usuariRegistrat.getNomUsuari()}" th:field="*{nomUsuari}"
+                                        name="nomUsuari" required />
                                 </div>
 
                                 <div class=" col-md-6">
                                     <label class="form-label" for="cognomUsuari">Cognom</label>
-                                    <input type="text" id="cognomUsuari" class="form-control form-control-lg" th:value="${usuariRegistrat.getCognomUsuari()}" th:field="*{cognomUsuari}" name="cognomUsuari" />
+                                    <input type="text" id="cognomUsuari" class="form-control form-control-lg"
+                                        th:value="${usuariRegistrat.getCognomUsuari()}" th:field="*{cognomUsuari}"
+                                        name="cognomUsuari" />
                                 </div>
                             </div>
 
                             <div class="row mt-2">
                                 <div class=" col-md-6">
                                     <label class="form-label" for="Email">El teu Email</label>
-                                    <input type="email" id="Email" class="form-control form-control-lg" th:value="${usuariRegistrat.getCorreuUsuari()}" th:field="*{correuUsuari}" name="correuUsuari" required/>
+                                    <input type="email" id="Email" class="form-control form-control-lg"
+                                        th:value="${usuariRegistrat.getCorreuUsuari()}" th:field="*{correuUsuari}"
+                                        name="correuUsuari" required />
                                 </div>
 
                                 <div class=" col-md-6">
                                     <label class="form-label" for="Contrasenya">Contrasenya</label>
-                                    <input type="text" id="Contrasenya" class="form-control form-control-lg" th:value="${usuariRegistrat.getContrasenyaUsuari()}" th:field="*{contrasenyaUsuari}" name="contrasenyaUsuari" required/>
+                                    <input type="text" id="Contrasenya" class="form-control form-control-lg"
+                                        th:value="${usuariRegistrat.getContrasenyaUsuari()}"
+                                        th:field="*{contrasenyaUsuari}" name="contrasenyaUsuari" required />
                                 </div>
                             </div>
 
                             <div class="row mt-2">
                                 <div class=" col-md-6">
                                     <label class="form-label" for="telefonUsuari">Telefon</label>
-                                    <input type="tel" id="telefonUsuari" class="form-control form-control-lg" th:value="${usuariRegistrat.getTelefonUsuari()}" th:field="*{telefonUsuari}" name="telefonUsuari" pattern="[0-9]{9}"/>
+                                    <input type="tel" id="telefonUsuari" class="form-control form-control-lg"
+                                        th:value="${usuariRegistrat.getTelefonUsuari()}" th:field="*{telefonUsuari}"
+                                        name="telefonUsuari" pattern="[0-9]{9}" />
                                 </div>
                             </div>
                             <button class="btn btn-primary profile-button" type="submit">Save Profile</button>
                         </form>
-                        <p class = "errorMessage top-arrow" > </p>
+                        <p class="errorMessage top-arrow"> </p>
                         <div class="mt-5 text-center">
-                            
                             <a th:href="@{/profile?view_name=logout}" class="btn btn-primary active"> Log out</a>
                         </div>
+                        <div>
+                            Activitats apuntades
+                            <div th:each="diesAgenda : ${agendesUpdate}">
+                                <div th:each="activitat : ${activitatsUsuari}">
+                                    <div th:if="${diesAgenda.getIdActivitat() == activitat.getIdActivitat()}" class="row">
+                                        <p th:text="${activitat.getTitolActivitat()} + ' el dia: ' + ${#dates.format(diesAgenda.getDataActivitat(), 'dd-MM-yyyy')}" class="col-md-6"></p>
+                                        <form style="margin:0px" th:action="@{/profile}" th:method="delete" class="col-md-6">
+                                            <input type="hidden" name="id" th:value="${diesAgenda.getIdAgenda}">
+                                            <button type="submit" class="btn btn-danger"> Eliminar </button><!-- Aquest es el boto d'eliminar-->
+                                          </form>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
