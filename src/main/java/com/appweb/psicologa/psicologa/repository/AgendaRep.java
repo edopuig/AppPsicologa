@@ -1,6 +1,6 @@
 package com.appweb.psicologa.psicologa.repository;
 
-import java.util.Calendar;
+
 import java.util.Date;
 import java.util.List;
 import javax.sql.DataSource;
@@ -78,11 +78,7 @@ public class AgendaRep implements InterfacreGeneral<Agenda> {
 
     public boolean guardarByIdActivitatData(List<Date> dataActivitat, int idActivitat) {
         try {
-            Calendar dia = Calendar.getInstance();
             for (Date data : dataActivitat) {
-                dia.setTime(data);
-                dia.add(Calendar.DATE, 1);
-                data = dia.getTime();
                 String sql = "insert into agendactivitat(DataActivitat,IdActivitat) values(?,?)";
                 jdbcTemplate.update(sql, data, idActivitat);
             }
