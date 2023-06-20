@@ -20,20 +20,20 @@ public class DatabaseConfiguration {
     @Bean
     public DataSource getDatasource(){
         
-        /*TEST*/
+        /*TEST
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(env.getProperty("spring.datasource.driver-class-name"));
         dataSource.setUsername(env.getProperty("spring.datasource.name"));
         dataSource.setPassword(env.getProperty("spring.datasource.password"));
         dataSource.setUrl(env.getProperty("spring.datasource.url"));
-        return dataSource;
+        return dataSource;*/
 
          
-       /* PRO
+       /* PRO*/
        
        HikariConfig config = new HikariConfig();
         config.setJdbcUrl(dbUrl);
-        return new HikariDataSource(config);  */
+        return new HikariDataSource(config);  
     }
     
 }
